@@ -1,7 +1,5 @@
-// TODO
-// - error handling (i.e. no definitions found)
 const ONE_MINUTE = 60 * 1000;
-const INTERVAL = 2000;
+const INTERVAL = 5000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 
 const {ipcRenderer, shell} = require('electron');
