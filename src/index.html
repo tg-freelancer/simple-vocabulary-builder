@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Effortless Vocabulary Builder</title>
+  <link rel="stylesheet" type="text/css" href="reset.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Build your vocabulary effortlessly</h1>
+  </header>
+  <main>
+    <fieldset>
+      <dl>
+        <dt>
+          <label for="interval">Interval (in minutes)</label>
+        </dt>
+        <dd>
+          <input type="text" name="interval" id="interval">
+        </dd>
+        <dt>
+          <label>Select a word list (.txt file)</label>
+        </dt>
+        <dd>
+          <button id="select-file-btn">Select file</button>
+        </dd>
+      </dl>
+    </fieldset>
+    <p id="selected-file"></p>
+  </main>
+  <script>require('./renderer')</script>
+</body>
+</html>
