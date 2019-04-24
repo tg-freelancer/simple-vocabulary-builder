@@ -1,6 +1,7 @@
 const ONE_MINUTE = 60 * 1000;
-const INTERVAL = 5000;
+const INTERVAL = 4000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
+const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 
 const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
@@ -25,22 +26,23 @@ ipcRenderer.on('selected-file', (e, path) => {
 
     // retrieve words/phrases and shuffle the result
     const words = miscHelpers.shuffle(miscHelpers.getSanitizedWords(data));
+    let targetLang = 'en';
 
     // implement notifications
     let notificationOptions;
     let notification;
     let index = 0;
 
-    const fields = "definitions";
-    const strictMatch = "false";
+    // const fields = "definitions";
+    // const strictMatch = "false";
 
     const timer = setInterval(() => {
       let definition;
       let word = words[index];
-      let path = encodeURI(`/?define=${word}`);
+      let path = encodeURI(`/?define=${word}&lang=${targetLang}`);
 
       const options = {
-        host: 'googledictionaryapi.eu-gb.mybluemix.net',
+        host: API_HOST_URL,
         port: '443',
         path: path,
         headers: {
@@ -58,7 +60,7 @@ ipcRenderer.on('selected-file', (e, path) => {
           definition = dictHelpers.getFirstDefinition(json);
 
           notificationOptions = {
-            title: word,
+            title: `${word} ${index}`,
             body: definition || DEFINITION_NOT_FOUND_MSG
           };
 
@@ -72,6 +74,13 @@ ipcRenderer.on('selected-file', (e, path) => {
           }
 
           index += 1;
+
+          if (index > words.length - 1) {
+            // clearInterval(timer);
+
+            // enables loop
+            index = 0;
+          }
         });
 
         res.on('end', () => {
@@ -85,9 +94,14 @@ ipcRenderer.on('selected-file', (e, path) => {
 
       req.end();
 
-      if (index === words.length - 1) {
-        clearInterval(timer);
-      }
+      // if (index > words.length - 1) {
+      //   // clearInterval(timer);
+
+      //   // enables loop
+      //   index = 0;
+      // }
+
+      console.log(`index: ${index}`);
     }, INTERVAL);
   });
 });
