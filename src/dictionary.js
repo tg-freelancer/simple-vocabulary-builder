@@ -4,5 +4,8 @@ module.exports = {
 
     const meanings = json[0].meaning;
     return meanings[Object.keys(meanings)[0]][0].definition;
+  },
+  validateForm(form) {
+    return false;
   }
 };
