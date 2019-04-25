@@ -23,14 +23,14 @@ button {
   cursor: pointer;
 }
 
-.interval,
+#interval,
 .select-file-btn,
 .start-btn {
   height: 25px;
   width: 82px;
 }
 
-.interval {
+#interval {
   padding: 2px 5px;
 }
 
@@ -50,4 +50,8 @@ button {
 .start-btn:hover {
   color: #E6DEFF;
   background: #8400FF; 
+}
+
+.error {
+  color: #FF2B8F;
 }

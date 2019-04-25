@@ -48,8 +48,13 @@ $startBtn.on('click', (e) => {
 
   // validate form
   let isValid = dictHelpers.validateForm($form);
+  let errorMessage;
 
-  if (!isValid) return;
+  if (!isValid) {
+    errorMessage = dictHelpers.determineErrorMessage($form);   
+    $form.find('.error').text(errorMessage);
+    return;
+  }
 
   // implement notifications
   let notificationOptions;
