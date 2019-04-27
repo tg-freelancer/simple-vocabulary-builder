@@ -1,6 +1,6 @@
 const $ = require('jquery');
 
-// const ONE_MINUTE = 60 * 1000;
+const ONE_MINUTE = 60 * 1000;
 // const INTERVAL = 0.1 * ONE_MINUTE;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
@@ -21,6 +21,7 @@ const $form = $('form');
 
 let words;
 let targetLang;
+let isFileSelected = false;
 let interval;
 
 $selectFileBtn.on('click', (e) => {
@@ -28,7 +29,8 @@ $selectFileBtn.on('click', (e) => {
 });
 
 ipcRenderer.on('selected-file', (e, path) => {
-  $('.selected-file').innerHTML = `Selected file: ${path}`;
+  $('.selected-file').text(`Selected file: ${path}`);
+  $('.selected-file').attr('data-file-selected', true);
 
   // read the selected file
   fs.readFile(path[0], {
@@ -47,22 +49,21 @@ $startBtn.on('click', (e) => {
   e.preventDefault();
 
   // validate form
-  let isValid = dictHelpers.validateForm($form);
+  let isValidForm = dictHelpers.validateForm($form);
   let errorMessage;
 
-  if (!isValid) {
+  if (!isValidForm) {
     errorMessage = dictHelpers.determineErrorMessage($form);   
     $form.find('.error').text(errorMessage);
     return;
   }
 
+  interval = Number($form.find('#interval').val()) * ONE_MINUTE;
+
   // implement notifications
   let notificationOptions;
   let notification;
   let index = 0;
-
-  // const fields = "definitions";
-  // const strictMatch = "false";
 
   const timer = setInterval(() => {
     word = words[index];
@@ -89,7 +90,7 @@ $startBtn.on('click', (e) => {
         definition = dictHelpers.getFirstDefinition(json);
 
         notificationOptions = {
-          title: `${word} ${index}`,
+          title: word,
           body: definition || DEFINITION_NOT_FOUND_MSG
         };
 
@@ -131,5 +132,5 @@ $startBtn.on('click', (e) => {
     // }
 
     console.log(`index: ${index}`);
-  }, INTERVAL);
+  }, interval);
 })
