@@ -1,4 +1,5 @@
 const $ = require('jquery');
+const miscHelpers = require('./misc');
 
 module.exports = {
   getFirstDefinition(json) {
@@ -36,5 +37,13 @@ module.exports = {
     }
 
     return errorMessage;
+  },
+  trimFilePath(path) {
+    const files = path.split('/');
+    return miscHelpers.getLastElement(files);
+  },
+  getFileExt(fileName) {
+    const components = fileName.split(/\./);
+    return miscHelpers.getLastElement(components);
   }
 };

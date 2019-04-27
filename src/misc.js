@@ -15,5 +15,8 @@ module.exports = {
     }
 
     return shuffledArr;
+  },
+  getLastElement(arr) {
+    return arr[arr.length - 1];
   }
 }

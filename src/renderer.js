@@ -29,11 +29,19 @@ $selectFileBtn.on('click', (e) => {
 });
 
 ipcRenderer.on('selected-file', (e, path) => {
-  $('.selected-file').text(`Selected file: ${path}`);
-  $('.selected-file').attr('data-file-selected', true);
+  const pathStr = path[0];
+  const fileName = dictHelpers.trimFilePath(pathStr);
+  const fileExt = dictHelpers.getFileExt(fileName);
 
+  if (fileExt !== 'txt') {
+    console.log('Looks like the selected file is not a text file.')
+    return;
+  }
+
+  $('.selected-file').text(`Selected file: ${fileName}`);
+  $('.selected-file').attr('data-file-selected', true);
   // read the selected file
-  fs.readFile(path[0], {
+  fs.readFile(pathStr, {
     encoding: 'utf8'
   }, (err, data) => {
     if (err) throw err;
