@@ -58,11 +58,12 @@ $startBtn.on('click', (e) => {
 
   // validate form
   let isValidForm = dictHelpers.validateForm($form);
-  let errorMessage;
+  let errorMessages;
 
   if (!isValidForm) {
-    errorMessage = dictHelpers.determineErrorMessage($form);   
-    $form.find('.error').text(errorMessage);
+    errorMessages = dictHelpers.getErrorMessages($form);
+    dictHelpers.displayErrors(errorMessages, $form);
+    // $form.find('.error').text(errorMessage);
     return;
   }
 

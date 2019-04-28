@@ -12,7 +12,7 @@ module.exports = {
     const errorType = $interval[0].validity;
     return !(errorType.valueMissing || errorType.patternMismatch);
   },
-  isValidFile($file) {
+  isFileSelected($file) {
     return $file.attr('data-file-selected');
   },
   validateForm($form) {
@@ -21,22 +21,38 @@ module.exports = {
     const $selectedFile = $form.find('.selected-file');
 
     return this.isValidInterval($interval)
-            && this.isValidFile($selectedFile);
+            && this.isFileSelected($selectedFile);
   },
-  determineErrorMessage($form) {
-    const $interval = $form.find('input[type="text"]');
-    const errorType = $interval[0].validity;
-    let errorMessage;
-
+  registerIntervalErrorMessage(errorMessages, errorType) {
     if (errorType.valueMissing) {
-      errorMessage = 'This value is required.';
+      errorMessages.interval = 'This value is required.';
     } else if (errorType.patternMismatch) {
-      errorMessage = 'Please enter a valid value.';
+      errorMessages.interval = 'Please enter a valid value.';
     } else {
-      errorMessage = 'Default error message';
+      errorMessage.interval = 'Default error message';
+    }
+  },
+  getErrorMessages($form) {
+    const $interval = $form.find('input[type="text"]');
+    const $selectedFile = $form.find('.selected-file');
+    const intervalErrorType = $interval[0].validity;
+    let errorMessages = {};
+
+    this.registerIntervalErrorMessage(errorMessages, intervalErrorType);
+
+    if (!this.isFileSelected($selectedFile)) {
+      errorMessages.file = 'Please select a text file.';
     }
 
-    return errorMessage;
+    return errorMessages;
+  },
+  displayErrors(errorMessages, $form) {
+    $form.find('.error').each(function() {
+      let classes = $(this).attr('class').split(/\s/);
+      let errorType = miscHelpers.getLastElement(classes);
+      let errorMessage = errorMessages[errorType];
+      $(this).text(errorMessage);
+    });
   },
   trimFilePath(path) {
     const files = path.split('/');
