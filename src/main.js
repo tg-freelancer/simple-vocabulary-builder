@@ -23,7 +23,11 @@ app.on('ready', () => {
 
   ipcMain.on('open-file-dialog', (e) => {
     dialog.showOpenDialog(mainWindow, {
-      properties: ['openFile', 'openDirectory']
+      properties: ['openFile'],
+      filters: [{
+        name: 'Text Files',
+        extensions: ['txt']
+      }]
     }, (files) => {
       if (files) {
         e.sender.send('selected-file', files);
