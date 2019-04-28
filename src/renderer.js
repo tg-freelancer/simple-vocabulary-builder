@@ -34,9 +34,12 @@ ipcRenderer.on('selected-file', (e, path) => {
   const fileExt = dictHelpers.getFileExt(fileName);
 
   if (fileExt !== 'txt') {
-    console.log('Looks like the selected file is not a text file.')
+    console.log('Looks like the selected file is not a text file.');
     return;
   }
+
+  // delete the error message if it exists
+  $form.find('.file').text('');
 
   $('.selected-file').text(`Selected file: ${fileName}`);
   $('.selected-file').attr('data-file-selected', true);
@@ -59,11 +62,9 @@ $startBtn.on('click', (e) => {
   // validate form
   let isValidForm = dictHelpers.validateForm($form);
   let errorMessages;
-
   if (!isValidForm) {
     errorMessages = dictHelpers.getErrorMessages($form);
     dictHelpers.displayErrors(errorMessages, $form);
-    // $form.find('.error').text(errorMessage);
     return;
   }
 
