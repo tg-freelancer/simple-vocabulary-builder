@@ -24,16 +24,15 @@ module.exports = {
             && this.isFileSelected($selectedFile);
   },
   registerIntervalErrorMessage(errorMessages, errorType) {
+    console.log(errorType)
     if (errorType.valueMissing) {
       errorMessages.interval = 'This value is required.';
     } else if (errorType.patternMismatch) {
       errorMessages.interval = 'Please enter a valid value.';
-    } else {
-      errorMessage.interval = 'Default error message';
     }
   },
   getErrorMessages($form) {
-    const $interval = $form.find('input[type="text"]');
+    const $interval = $form.find('#interval');
     const $selectedFile = $form.find('.selected-file');
     const intervalErrorType = $interval[0].validity;
     let errorMessages = {};

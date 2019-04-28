@@ -11,13 +11,10 @@ const http = require("https");
 const dictHelpers = require('./dictionary');
 const miscHelpers = require('./misc');
 
-// const selectFileBtn = document.querySelector('.select-file-btn');
-// const startBtn = document.querySelector('.start-btn');
-// const form = document.querySelector('form');
-
-const $selectFileBtn = $('.select-file-btn');
-const $startBtn = $('.start-btn');
 const $form = $('form');
+const $selectFileBtn = $form.find('.select-file-btn');
+const $startBtn = $form.find('.start-btn');
+const $intervalInput = $('#interval');
 
 let words;
 let targetLang;
@@ -55,20 +52,41 @@ ipcRenderer.on('selected-file', (e, path) => {
   });
 });
 
+// validate interval input when blurred and display error message if necessary
+$intervalInput.on('blur', (e) => {
+  const $e = $(e.target);
+  const $errorMessageSpan = $e.next('.error');
+  let isValidInterval = dictHelpers.isValidInterval($e);
+
+  if (!isValidInterval) {
+    // get and display error message
+    let errorMessage = {};
+    dictHelpers.registerIntervalErrorMessage(errorMessage, $e[0].validity);
+    $errorMessageSpan.text(errorMessage.interval);
+  } else {
+    $errorMessageSpan.text('');
+  }
+});
+
+// remove error message (if any) for interval input when focused
+$intervalInput.on('focus', (e) => {
+  $(e.target).next('.error').text('');
+});
+
 // kick off notification displays
 $startBtn.on('click', (e) => {
   e.preventDefault();
 
   // validate form
   let isValidForm = dictHelpers.validateForm($form);
-  let errorMessages;
+
   if (!isValidForm) {
-    errorMessages = dictHelpers.getErrorMessages($form);
+    const errorMessages = dictHelpers.getErrorMessages($form);
     dictHelpers.displayErrors(errorMessages, $form);
     return;
   }
 
-  interval = Number($form.find('#interval').val()) * ONE_MINUTE;
+  interval = Number($intervalInput.val()) * ONE_MINUTE;
 
   // implement notifications
   let notificationOptions;
