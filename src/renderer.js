@@ -21,7 +21,8 @@ let targetLang;
 let isFileSelected = false;
 let interval;
 let timer;
-let timerOn = false;
+let index;
+// let timerOn = false;
 
 $selectFileBtn.on('click', (e) => {
   ipcRenderer.send('open-file-dialog');
@@ -79,11 +80,11 @@ $intervalInput.on('focus', (e) => {
 $toggleBtn.on('click', (e) => {
   e.preventDefault();
 
-  if (timer && timerOn) {
+  if (timer) {
     // stop the timer and change the toggle btn text
     clearInterval(timer);
     timer = null;
-    timerOn = false;
+    // timerOn = false;
     $(e.target).text('Start');
     return;
   }
@@ -109,11 +110,12 @@ $toggleBtn.on('click', (e) => {
   // implement notifications
   let notificationOptions;
   let notification;
-  let index = 0;
+
+  index = index || 0;
 
   // start the timer and change the toggle btn text
   $(e.target).text('Stop');
-  timerOn = true;
+  // timerOn = true;
 
   timer = setInterval(() => {
     word = words[index];
@@ -171,14 +173,5 @@ $toggleBtn.on('click', (e) => {
     });
 
     req.end();
-
-    // if (index > words.length - 1) {
-    //   // clearInterval(timer);
-
-    //   // enables loop
-    //   index = 0;
-    // }
-
-    console.log(`index: ${index}`);
   }, interval);
 })
