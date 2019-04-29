@@ -25,7 +25,7 @@ button {
 
 #interval,
 .select-file-btn,
-.start-btn {
+.toggle-btn {
   height: 25px;
   width: 82px;
 }
@@ -40,14 +40,14 @@ button {
   color: #8400FF;
 }
 
-.start-btn {
+.toggle-btn {
   margin-right: 7px;
   transition: all .1s ease-in;
   background: #E6DEFF;
   color: #8400FF; 
 }
 
-.start-btn:hover {
+.toggle-btn:hover {
   color: #E6DEFF;
   background: #8400FF; 
 }

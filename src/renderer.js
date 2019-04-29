@@ -13,13 +13,15 @@ const miscHelpers = require('./misc');
 
 const $form = $('form');
 const $selectFileBtn = $form.find('.select-file-btn');
-const $startBtn = $form.find('.start-btn');
+const $toggleBtn = $form.find('.toggle-btn');
 const $intervalInput = $('#interval');
 
 let words;
 let targetLang;
 let isFileSelected = false;
 let interval;
+let timer;
+let timerOn = false;
 
 $selectFileBtn.on('click', (e) => {
   ipcRenderer.send('open-file-dialog');
@@ -74,17 +76,33 @@ $intervalInput.on('focus', (e) => {
 });
 
 // kick off notification displays
-$startBtn.on('click', (e) => {
+$toggleBtn.on('click', (e) => {
   e.preventDefault();
+
+  if (timer && timerOn) {
+    // stop the timer and change the toggle btn text
+    clearInterval(timer);
+    timer = null;
+    timerOn = false;
+    $(e.target).text('Start');
+    return;
+  }
 
   // validate form
   let isValidForm = dictHelpers.validateForm($form);
 
+  // if invalid, display error message(s) and return
   if (!isValidForm) {
     const errorMessages = dictHelpers.getErrorMessages($form);
     dictHelpers.displayErrors(errorMessages, $form);
     return;
   }
+
+  // if (timer && toggleBtnText === '')
+
+  // // change btn text
+  // const toggleBtnText = $(e.target).text() === 'Start' ? 'Stop' : 'Start';
+  // $(e.target).text(toggleBtnText);
 
   interval = Number($intervalInput.val()) * ONE_MINUTE;
 
@@ -93,7 +111,11 @@ $startBtn.on('click', (e) => {
   let notification;
   let index = 0;
 
-  const timer = setInterval(() => {
+  // start the timer and change the toggle btn text
+  $(e.target).text('Stop');
+  timerOn = true;
+
+  timer = setInterval(() => {
     word = words[index];
 
     let definition;
@@ -133,10 +155,8 @@ $startBtn.on('click', (e) => {
 
         index += 1;
 
+        // execute loop
         if (index > words.length - 1) {
-          // clearInterval(timer);
-
-          // enables loop
           index = 0;
         }
       });
