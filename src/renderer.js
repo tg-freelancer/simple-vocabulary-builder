@@ -14,10 +14,12 @@ const $form = $('form');
 const $selectFileBtn = $form.find('.select-file-btn');
 const $toggleBtn = $form.find('.toggle-btn');
 const $intervalInput = $('#interval');
+const $loopCheckBox = $('.loop input[type="checkbox"]');
 
+let isFileSelected = false;
+let checked = true;
 let words;
 let targetLang;
-let isFileSelected = false;
 let interval;
 let timer;
 let index;
@@ -97,9 +99,10 @@ $toggleBtn.on('click', (e) => {
   }
 
   interval = Number($intervalInput.val()) * ONE_MINUTE;
+  // checked = $()
 
   // if valid, clear the input values
-  $form[0].reset();
+  // $form[0].reset();
 
   // implement notifications
   let notificationOptions;
@@ -152,7 +155,12 @@ $toggleBtn.on('click', (e) => {
 
         // execute loop
         if (index > words.length - 1) {
-          index = 0;
+          if ($loopCheckBox.prop('checked')) {
+            index = 0;
+          } else {
+            clearInterval(timer);
+            $toggleBtn.text('Start');
+          }
         }
       });
 

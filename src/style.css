@@ -16,7 +16,7 @@ dt {
 }
 
 dd {
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 button {
@@ -54,4 +54,12 @@ button {
 
 .error {
   color: #FF2B8F;
+}
+
+.loop label {
+  /*vertical-align: middle;*/
+}
+
+.loop input[type="checkbox"] {
+  transform: scale(1.3);
 }
