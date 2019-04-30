@@ -1,7 +1,6 @@
 const $ = require('jquery');
 
 const ONE_MINUTE = 60 * 1000;
-// const INTERVAL = 0.1 * ONE_MINUTE;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 
