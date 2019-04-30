@@ -22,7 +22,6 @@ let isFileSelected = false;
 let interval;
 let timer;
 let index;
-// let timerOn = false;
 
 $selectFileBtn.on('click', (e) => {
   ipcRenderer.send('open-file-dialog');
@@ -84,7 +83,6 @@ $toggleBtn.on('click', (e) => {
     // stop the timer and change the toggle btn text
     clearInterval(timer);
     timer = null;
-    // timerOn = false;
     $(e.target).text('Start');
     return;
   }
@@ -99,13 +97,10 @@ $toggleBtn.on('click', (e) => {
     return;
   }
 
-  // if (timer && toggleBtnText === '')
-
-  // // change btn text
-  // const toggleBtnText = $(e.target).text() === 'Start' ? 'Stop' : 'Start';
-  // $(e.target).text(toggleBtnText);
-
   interval = Number($intervalInput.val()) * ONE_MINUTE;
+
+  // if valid, clear the input values
+  $form[0].reset();
 
   // implement notifications
   let notificationOptions;
@@ -115,7 +110,6 @@ $toggleBtn.on('click', (e) => {
 
   // start the timer and change the toggle btn text
   $(e.target).text('Stop');
-  // timerOn = true;
 
   timer = setInterval(() => {
     word = words[index];
