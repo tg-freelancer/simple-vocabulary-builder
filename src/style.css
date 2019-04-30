@@ -57,7 +57,7 @@ button {
 }
 
 .loop label {
-  /*vertical-align: middle;*/
+  cursor: pointer;
 }
 
 .loop input[type="checkbox"] {
