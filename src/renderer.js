@@ -119,12 +119,14 @@ $toggleBtn.on('click', (e) => {
     let definition;
     let path = encodeURI(`/?define=${word}&lang=${targetLang}`);
 
+    // set 'Content-Type' to 'text/plain', rather than 'application/json'
+    // due to the original API response supposedly not being formated properly
     const options = {
       host: API_HOST_URL,
       port: '443',
       path: path,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain'
       }
     };
 
@@ -134,6 +136,7 @@ $toggleBtn.on('click', (e) => {
       res.on('data', (data) => {
         // check if data is of type html
         // (no error code specified in the original api)
+        console.log(data);
         const json = data[0] === '<' ? null : JSON.parse(data);
         definition = dictHelpers.getFirstDefinition(json);
 
