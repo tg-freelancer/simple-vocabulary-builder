@@ -6,39 +6,56 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Build your vocabulary effortlessly</h1>
-  </header>
-  <main>
-    <form>
-      <fieldset>
-        <dl>
-          <dt>
-            <label>Select a word list (.txt file)</label>
-          </dt>
-          <dd>
-            <button class="select-file-btn">Select file</button>
-            <span class="selected-file"></span>
-            <span class="error file"></span>
-          </dd>
-          <dt>
-            <label for="interval">Interval (in minutes)</label>
-          </dt>
-          <dd>
-            <input type="text" name="interval" id="interval" pattern="[0-9]*\.?[0-9]+" required>
-            <span class="error interval"></span>
-          </dd>
-          <dd class="loop">
-            <label>
-              <input type="checkbox" name="loop" checked>
-              Enable loop
-            </label>
-          </dd>
-          <button class="toggle-btn" type="submit">Start</button>
-        </dl>
-      </fieldset>
-    </form>
-  </main>
+  <aside>
+    <nav>
+      <li>
+        <a href="about.html">About</a>
+      </li>
+      <li>
+        <a href="about.html">Settings</a>
+      </li>
+      <li>
+        <a href="about.html">Contact</a>
+      </li>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <header>
+      <h1>Build your vocabulary effortlessly</h1>
+    </header>
+
+    <main>
+      <form>
+        <fieldset>
+          <dl>
+            <dt>
+              <label>Select a word list (.txt file)</label>
+            </dt>
+            <dd>
+              <button class="select-file-btn">Select file</button>
+              <span class="selected-file"></span>
+              <span class="error file"></span>
+            </dd>
+            <dt>
+              <label for="interval">Interval (in minutes)</label>
+            </dt>
+            <dd>
+              <input type="text" name="interval" id="interval" pattern="[0-9]*\.?[0-9]+" required>
+              <span class="error interval"></span>
+            </dd>
+            <dd class="loop">
+              <label>
+                <input type="checkbox" name="loop" checked>
+                Enable loop
+              </label>
+            </dd>
+            <button class="toggle-btn" type="submit">Start</button>
+          </dl>
+        </fieldset>
+      </form>
+    </main>
+  </div>
   <script>require('./renderer')</script>
 </body>
 </html>

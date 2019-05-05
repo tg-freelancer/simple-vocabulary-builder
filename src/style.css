@@ -3,12 +3,58 @@ html {
   font: normal 16px Helvetica, Arial, sans-serif;
 }
 
+/*---/--- index.html ---/---*/
+
 h1 {
   font-size: 26px;
 }
 
-header, main {
+main {
+  padding: 10px 20px;
+  /*text-align: center;*/
+}
+
+header {
   padding: 10px;
+}
+
+aside {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  height: 100vh;
+  width: 125px;
+  background: #eaeaea;
+  z-index: 1000;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+/*
+a:hover {
+  cursor: pointer;
+}*/
+/*
+.container {
+  float: right;
+}*/
+
+/*--- main ---*/
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 125px;
+  /*margin: 0 auto;*/
 }
 
 dt {
