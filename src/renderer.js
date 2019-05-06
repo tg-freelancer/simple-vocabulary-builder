@@ -1,5 +1,8 @@
 const $ = require('jquery');
 
+// compile template
+const templateHtml = $('')
+
 const ONE_MINUTE = 60 * 1000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
