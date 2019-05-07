@@ -27,11 +27,11 @@ let interval;
 let timer;
 let index;
 
-$selectFileBtn.on('click', (e) => {
+$selectFileBtn.on('click', (evt) => {
   ipcRenderer.send('open-file-dialog');
 });
 
-ipcRenderer.on('selected-file', (e, path) => {
+ipcRenderer.on('selected-file', (evt, path) => {
   const pathStr = path[0];
   const fileName = dictHelpers.trimFilePath(pathStr);
   const fileExt = dictHelpers.getFileExt(fileName);
@@ -59,8 +59,8 @@ ipcRenderer.on('selected-file', (e, path) => {
 });
 
 // validate interval input when blurred and display error message if necessary
-$intervalInput.on('blur', (e) => {
-  const $e = $(e.target);
+$intervalInput.on('blur', (evt) => {
+  const $e = $(evt.target);
   const $errorMessageSpan = $e.next('.error');
   let isValidInterval = dictHelpers.isValidInterval($e);
 
@@ -75,19 +75,19 @@ $intervalInput.on('blur', (e) => {
 });
 
 // remove error message (if any) for interval input when focused
-$intervalInput.on('focus', (e) => {
-  $(e.target).next('.error').text('');
+$intervalInput.on('focus', (evt) => {
+  $(evt.target).next('.error').text('');
 });
 
 // kick off notification displays
-$toggleBtn.on('click', (e) => {
-  e.preventDefault();
+$toggleBtn.on('click', (evt) => {
+  evt.preventDefault();
 
   if (timer) {
     // stop the timer and change the toggle btn text
     clearInterval(timer);
     timer = null;
-    $(e.target).text('Start');
+    $(evt.target).text('Start');
     return;
   }
 
@@ -114,7 +114,7 @@ $toggleBtn.on('click', (e) => {
   index = index || 0;
 
   // start the timer and change the toggle btn text
-  $(e.target).text('Stop');
+  $(evt.target).text('Stop');
 
   timer = setInterval(() => {
     word = words[index];

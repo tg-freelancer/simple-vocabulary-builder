@@ -9,23 +9,28 @@
   <aside>
     <nav>
       <li>
-        <a href="about.html">About</a>
+        <a class="about">About</a>
       </li>
       <li>
-        <a href="about.html">Settings</a>
+        <a class="settings">Settings</a>
       </li>
       <li>
-        <a href="about.html">Contact</a>
+        <a class="contact">Contact</a>
       </li>
     </nav>
   </aside>
-
+  <script id="container" type="text/x-handlebars-template">
   <div class="container">
     <header>
       <h1>Build your vocabulary effortlessly</h1>
     </header>
 
     <main>
+      {{{contents}}}
+    </main>
+  </div>
+  </script>
+  <script id="index" type="text/x-handlebars-template">
       <form>
         <fieldset>
           <dl>
@@ -54,8 +59,15 @@
           </dl>
         </fieldset>
       </form>
-    </main>
-  </div>
+  </script>
+  <script id="about" type="text/x-handlebars-template">
+    <div>
+      about page
+    </div>
+  </script>
+  <script>require('./initial_compiler')</script>
+  <!--<script>require('./compiler')</script>-->
   <script>require('./renderer')</script>
+  <script>require('./links_handler')</script>
 </body>
 </html>

@@ -9,11 +9,13 @@ app.on('ready', () => {
     height: 600,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    // show: false
   });
 
   // mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  // mainWindow.loadFile(path.join(__dirname, 'layout.html'));
 
   mainWindow.webContents.openDevTools();
 
@@ -21,7 +23,11 @@ app.on('ready', () => {
     mainWindow = null
   });
 
-  ipcMain.on('open-file-dialog', (e) => {
+  // ipcMain.on('compilation-complete', (evt) => {
+  //   BrowserWindow.fromWebContents(evt.sender.webContents).show();
+  // });
+
+  ipcMain.on('open-file-dialog', (evt) => {
     dialog.showOpenDialog(mainWindow, {
       properties: ['openFile'],
       filters: [{
