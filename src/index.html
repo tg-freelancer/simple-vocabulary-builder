@@ -22,21 +22,53 @@
       </li>
     </nav>
   </aside>
-  <!-- template to be precompiled -->
-  <script id="container" type="text/x-handlebars-template">
   <div class="container">
-    <header>
-      <h1>Build your vocabulary effortlessly</h1>
-    </header>
-
     <main>
-      {{{contents}}}
+      <div class="contents">
+        <header>
+          <h1>Build your vocabulary effortlessly</h1>
+        </header>
+        <form>
+          <fieldset>
+            <dl>
+              <dt>
+                <label>Select a word list (.txt file)</label>
+              </dt>
+              <dd>
+                <button class="select-file-btn">Select file</button>
+                <span class="selected-file"></span>
+                <span class="error file"></span>
+              </dd>
+              <dt>
+                <label for="interval">Interval (minutes)</label>
+              </dt>
+              <dd>
+                <input type="text" name="interval" id="interval" pattern="[0-9]*\.?[0-9]+" required>
+                <span class="error interval"></span>
+              </dd>
+              <dd class="loop">
+                <label>
+                  <input type="checkbox" name="loop" checked>
+                  Enable loop
+                </label>
+              </dd>
+              <button class="toggle-btn" type="submit">Start</button>
+            </dl>
+          </fieldset>
+        </form>
+      </div>
     </main>
   </div>
+  <!-- template to be precompiled -->
+  <script id="container" type="text/x-handlebars-template">
+    {{{contents}}}
   </script>
   <!-- index page -->
   <script id="index" type="text/x-handlebars-template">
     <div class="contents">
+      <header>
+        <h1>Build your vocabulary effortlessly</h1>
+      </header>
       <form>
         <fieldset>
           <dl>
@@ -86,7 +118,7 @@
     </div>
   </script>
   <script>require('./precompiler')</script>
-  <script>require('./index_compiler')</script>
+  <!-- <script>require('./index_compiler')</script> -->
   <!--<script>require('./compiler')</script>-->
   <script>require('./renderer')</script>
   <script>require('./links_handler')</script>

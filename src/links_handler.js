@@ -6,6 +6,7 @@ $('aside a').on('click', (evt) => {
   evt.preventDefault();
   const $link = $(evt.target);
   const linkType = $link.attr('class');
+
   let newContext;
   let newContents;
 

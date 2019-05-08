@@ -29,6 +29,10 @@ aside {
   z-index: 1000;
 }
 
+form {
+  padding: 20px;
+}
+
 li {
   list-style: none;
   margin-bottom: 20px;
