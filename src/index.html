@@ -9,6 +9,9 @@
   <aside>
     <nav>
       <li>
+        <a class="index">Home</a>
+      </li>
+      <li>
         <a class="about">About</a>
       </li>
       <li>
@@ -19,6 +22,7 @@
       </li>
     </nav>
   </aside>
+  <!-- template to be precompiled -->
   <script id="container" type="text/x-handlebars-template">
   <div class="container">
     <header>
@@ -30,7 +34,9 @@
     </main>
   </div>
   </script>
+  <!-- index page -->
   <script id="index" type="text/x-handlebars-template">
+    <div class="contents">
       <form>
         <fieldset>
           <dl>
@@ -59,13 +65,28 @@
           </dl>
         </fieldset>
       </form>
+    </div>
   </script>
+  <!-- about page -->
   <script id="about" type="text/x-handlebars-template">
-    <div>
+    <div class="contents">
       about page
     </div>
   </script>
-  <script>require('./initial_compiler')</script>
+  <!-- settings page -->
+  <script id="settings" type="text/x-handlebars-template">
+    <div class="contents">
+      settings page
+    </div>
+  </script>
+  <!-- contact page -->
+  <script id="contact" type="text/x-handlebars-template">
+    <div class="contents">
+      contact page
+    </div>
+  </script>
+  <script>require('./precompiler')</script>
+  <script>require('./index_compiler')</script>
   <!--<script>require('./compiler')</script>-->
   <script>require('./renderer')</script>
   <script>require('./links_handler')</script>
