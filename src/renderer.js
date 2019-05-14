@@ -1,8 +1,5 @@
 const $ = require('jquery');
 
-// compile template
-const templateHtml = $('')
-
 const ONE_MINUTE = 60 * 1000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
@@ -19,8 +16,6 @@ const $toggleBtn = $form.find('.toggle-btn');
 const $intervalInput = $('#interval');
 const $loopCheckBox = $('.loop input[type="checkbox"]');
 
-let isFileSelected = false;
-let checked = true;
 let words;
 let targetLang;
 let interval;
@@ -139,13 +134,12 @@ $toggleBtn.on('click', (evt) => {
       res.on('data', (data) => {
         // check if data is of type html
         // (no error code specified in the original api)
-        console.log(data);
         const json = data[0] === '<' ? null : JSON.parse(data);
         definition = dictHelpers.getFirstDefinition(json);
 
         notificationOptions = {
           title: word,
-          body: definition || DEFINITION_NOT_FOUND_MSG
+          body: definition || DEFINITION_NOT_FOUND_MSG,
         };
 
         notification = new window.Notification(notificationOptions.title, notificationOptions);

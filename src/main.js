@@ -36,7 +36,7 @@ app.on('ready', () => {
       }]
     }, (files) => {
       if (files) {
-        e.sender.send('selected-file', files);
+        evt.sender.send('selected-file', files);
       }
     });
   });
