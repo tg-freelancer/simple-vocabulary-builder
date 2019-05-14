@@ -1,4 +1,52 @@
+// navigator.serviceWorker.register('./sw.js');
+
+// function showNotification() {
+//   Notification.requestPermission(function(result) {
+//     if (result === 'granted') {
+//       navigator.serviceWorker.ready.then(function(registration) {
+//         registration.showNotification('Vibration Sample', {
+//           body: 'Buzz! Buzz!'
+//           // icon: '../images/touch/chrome-touch-icon-192x192.png',
+//           // vibrate: [200, 100, 200, 100, 200, 100, 200],
+//           // tag: 'vibration-sample'
+//         });
+//       });
+//     } else {
+//       console.log('permission denied');
+//     }
+//   });
+// }
+
+// // showNotification();
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', function() {
+//     navigator.serviceWorker.register('./sw.js').then(function(registration) {
+//       // Registration was successful
+//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
+//       // registration.showNotification('New message from Alice', {
+//       //     body: 'Hello world',
+//       //     actions: [
+//       //         {action: 'like', title: 'Like'},
+//       //         {action: 'reply', title: 'Reply'}
+//       //     ]
+//       // });
+//     }, function(err) {
+//       // registration failed :(
+//       console.log('ServiceWorker registration failed: ', err);
+//     });
+//   });
+// }
+
+// ServiceWorkerRegistration.showNotification('New message from Alice', {
+//     body: 'Hello world',
+//     actions: [
+//         {action: 'like', title: 'Like'},
+//         {action: 'reply', title: 'Reply'}
+//     ]
+// });
+
 const $ = require('jquery');
+const notifier = require('node-notifier');
 
 const ONE_MINUTE = 60 * 1000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
@@ -137,19 +185,61 @@ $toggleBtn.on('click', (evt) => {
         const json = data[0] === '<' ? null : JSON.parse(data);
         definition = dictHelpers.getFirstDefinition(json);
 
+        // const url = definition ? null : `https://duckduckgo.com/?q=${definition}`;
+        // console.log(url);
         notificationOptions = {
+          // id: index,
+          // remove: index - 1,
           title: word,
-          body: definition || DEFINITION_NOT_FOUND_MSG,
+          message: definition || DEFINITION_NOT_FOUND_MSG,
+          // body: definition || DEFINITION_NOT_FOUND_MSG,
+          // actions: [
+          //   { action: 'like', title: 'Like' },
+          //   { action: 'reply', title: 'Reply' }
+          // ]
+          sound: false,
+          // 'icon': 'Terminal Icon',
+          contentImage: void 0,
+          // open: `https://duckduckgo.com/?q=${index}`,
+          // open: url,
+          // 'wait': false,
+          timeout: interval,
+          closeLabel: 'Close',
+          actions: ['like', 'dislike'],
+          dropdownLabel: 'Options',
+          reply: false
         };
 
-        notification = new window.Notification(notificationOptions.title, notificationOptions);
-
-        notification.onclick = () => {
-          if (!definition) {
-            const ddgUrl = encodeURI(`https://duckduckgo.com/?q=${word}`);
-            shell.openExternal(ddgUrl);
-          }
+        if (!definition) {
+          notificationOptions.open = `https://duckduckgo.com/?q=${word}`
         }
+
+        // console.log(notificationOptions);
+
+        notifier.notify(notificationOptions, function(error, response, metadata) {
+
+          // console.log('response', response);
+          // console.log('metadata', metadata);
+          // console.log('\n');
+        });
+
+        // notification = new window.Notification(notificationOptions.title, notificationOptions);
+        // notifier.notify(notificationOptions);
+
+        // notifier.on('click', (notifierObject, options) => {
+        //   if (!definition) {
+        //     console.log('definition not found');
+        //     const ddgUrl = encodeURI(`https://duckduckgo.com/?q=${word}`);
+        //     shell.openExternal(ddgUrl);
+        //   }          
+        // })
+
+        // notification.onclick = () => {
+        //   if (!definition) {
+        //     const ddgUrl = encodeURI(`https://duckduckgo.com/?q=${word}`);
+        //     shell.openExternal(ddgUrl);
+        //   }
+        // }
 
         index += 1;
 
