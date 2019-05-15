@@ -45,18 +45,21 @@
 //     ]
 // });
 
+// modules required
 const $ = require('jquery');
 const notifier = require('node-notifier');
-
-const ONE_MINUTE = 60 * 1000;
-const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
-const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
-
 const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
 const http = require("https");
 const dictHelpers = require('./dictionary');
 const miscHelpers = require('./misc');
+const Store = require('electron-store');
+const store = new Store();
+
+// useful constants
+const ONE_MINUTE = 60 * 1000;
+const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
+const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 
 const $form = $('form');
 const $selectFileBtn = $form.find('.select-file-btn');
@@ -97,6 +100,12 @@ ipcRenderer.on('selected-file', (evt, path) => {
 
     // retrieve words/phrases and shuffle the result
     words = miscHelpers.shuffle(miscHelpers.getSanitizedWords(data));
+
+    // create new list if it didn't exist
+    if (!store.has('list')) {
+      store.set('list', words);
+    }
+
     targetLang = 'en';
   });
 });
@@ -151,6 +160,8 @@ $toggleBtn.on('click', (evt) => {
   // $form[0].reset();
 
   // implement notifications
+  const yesIcon = '✓';
+  const noIcon = '☓'
   let notificationOptions;
   let notification;
 
@@ -188,38 +199,23 @@ $toggleBtn.on('click', (evt) => {
         // const url = definition ? null : `https://duckduckgo.com/?q=${definition}`;
         // console.log(url);
         notificationOptions = {
-          // id: index,
-          // remove: index - 1,
           title: word,
           message: definition || DEFINITION_NOT_FOUND_MSG,
-          // body: definition || DEFINITION_NOT_FOUND_MSG,
-          // actions: [
-          //   { action: 'like', title: 'Like' },
-          //   { action: 'reply', title: 'Reply' }
-          // ]
           sound: false,
-          // 'icon': 'Terminal Icon',
-          contentImage: void 0,
-          // open: `https://duckduckgo.com/?q=${index}`,
-          // open: url,
-          // 'wait': false,
           timeout: interval,
           closeLabel: 'Close',
-          actions: ['like', 'dislike'],
-          dropdownLabel: 'Options',
+          actions: [yesIcon, noIcon],
+          dropdownLabel: 'Remember?',
           reply: false
         };
 
         if (!definition) {
-          notificationOptions.open = `https://duckduckgo.com/?q=${word}`
+          notificationOptions.open = `https://google.com/search?q=${word}`
         }
 
-        // console.log(notificationOptions);
-
         notifier.notify(notificationOptions, function(error, response, metadata) {
-
           // console.log('response', response);
-          // console.log('metadata', metadata);
+          console.log('metadata', metadata);
           // console.log('\n');
         });
 

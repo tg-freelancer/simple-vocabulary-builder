@@ -1,5 +1,6 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
+    console.log('app.getPath("userData")', app.getPath('userData'));
 
 let mainWindow;
 

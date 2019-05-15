@@ -5,16 +5,18 @@ module.exports = {
               .map(item => item.trim())
               .filter(item => item.length);
   },
+  // returns an object with stats on user's reply
   shuffle(arr) {
-    const shuffledArr = [];
+    const shuffledItems = [];
 
     while (arr.length) {
       let randomIdx = Math.floor(Math.random() * arr.length);
       let randomItem = arr.splice(randomIdx, 1)[0];
-      shuffledArr.push(randomItem);
+      // shuffledItems.push({ word: randomItem, yes: 0, no: 0 });
+      shuffledItems.push(randomItem);
     }
 
-    return shuffledArr;
+    return shuffledItems;
   },
   getLastElement(arr) {
     return arr[arr.length - 1];
