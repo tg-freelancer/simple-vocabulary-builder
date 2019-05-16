@@ -67,16 +67,22 @@ const $toggleBtn = $form.find('.toggle-btn');
 const $intervalInput = $('#interval');
 const $loopCheckBox = $('.loop input[type="checkbox"]');
 
-let words;
+// getWordsListData
 let targetLang;
 let interval;
 let timer;
 let index;
+let words;
 
+// display the current word list
+$('.current_words_list').text(store.get('name'));
+
+// open the select file dialog window
 $selectFileBtn.on('click', (evt) => {
   ipcRenderer.send('open-file-dialog');
 });
 
+// process the file name and contents
 ipcRenderer.on('selected-file', (evt, path) => {
   const pathStr = path[0];
   const fileName = dictHelpers.trimFilePath(pathStr);
@@ -98,13 +104,18 @@ ipcRenderer.on('selected-file', (evt, path) => {
   }, (err, data) => {
     if (err) throw err;
 
-    // retrieve words/phrases and shuffle the result
-    words = miscHelpers.shuffle(miscHelpers.getSanitizedWords(data));
+    // retrieve words/phrases (and shuffle the result)
+    // words = miscHelpers.shuffle(miscHelpers.getSanitizedWords(data));
+    // miscHelpers.getSanitizedWords(data)
+    const wordsArr = miscHelpers.getWordsListData(miscHelpers.getSanitizedWords(data));
+    // create/update list
+    store.set('name', fileName);
+    store.set('words', wordsArr);
 
-    // create new list if it didn't exist
-    if (!store.has('list')) {
-      store.set('list', words);
-    }
+    words = store.get('words');
+
+    // update the current word list name
+    $('.current_words_list').text(store.get('name'));
 
     targetLang = 'en';
   });
@@ -154,7 +165,6 @@ $toggleBtn.on('click', (evt) => {
   }
 
   interval = Number($intervalInput.val()) * ONE_MINUTE;
-  // checked = $()
 
   // if valid, clear the input values
   // $form[0].reset();
@@ -171,10 +181,13 @@ $toggleBtn.on('click', (evt) => {
   $(evt.target).text('Stop');
 
   timer = setInterval(() => {
-    word = words[index];
-
+    // console.log(`index: ${index}`);
+    currentWordObj = words[index];
+    console.log('current index', index);
+    console.log('current state', store.get('words'));
+    // console.log(`currentWordObj: ${currentWordObj}, index: ${index}`);
     let definition;
-    let path = encodeURI(`/?define=${word}&lang=${targetLang}`);
+    let path = encodeURI(`/?define=${currentWordObj['word']}&lang=${targetLang}`);
 
     // set 'Content-Type' to 'text/plain', rather than 'application/json'
     // due to the original API response supposedly not being formated properly
@@ -199,10 +212,11 @@ $toggleBtn.on('click', (evt) => {
         // const url = definition ? null : `https://duckduckgo.com/?q=${definition}`;
         // console.log(url);
         notificationOptions = {
-          title: word,
+          title: currentWordObj['word'],
           message: definition || DEFINITION_NOT_FOUND_MSG,
           sound: false,
-          timeout: interval,
+          wait: true,
+          // timeout: interval,
           closeLabel: 'Close',
           actions: [yesIcon, noIcon],
           dropdownLabel: 'Remember?',
@@ -210,15 +224,85 @@ $toggleBtn.on('click', (evt) => {
         };
 
         if (!definition) {
-          notificationOptions.open = `https://google.com/search?q=${word}`
+          notificationOptions.open = `https://google.com/search?q=${currentWordObj['word']}`
         }
 
         notifier.notify(notificationOptions, function(error, response, metadata) {
-          // console.log('response', response);
-          console.log('metadata', metadata);
-          // console.log('\n');
+          // console.log(store.set(`words.${index}`, 'hello'));
+          const currentYesCount = store.get(`words.${index}.yes`);
+          const currentNoCount = store.get(`words.${index}.no`);
+
+          // console.log(`currentYesCount for ${store.get(`words.${index}`)}`, currentYesCount);
+          // console.log(`currentNoCount for ${store.get(`words.${index}`)}`, currentNoCount);
+
+          // update database based on the user response
+          if (metadata.activationValue === yesIcon) {
+            store.set(`words.${index}.yes`, currentYesCount + 1);
+            console.log(currentWordObj['word'], 'yes!!!');
+            // store.set(`words[]`word['yes'] += 1;
+            // console.log(store.set('words')[index], { word: 'kokok', lplp: 'lplp' });
+            // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
+          } else if (metadata.activationValue === noIcon) {
+            store.set(`words.${index}.no`, currentNoCount + 1);
+            console.log(currentWordObj['word'], 'no...');
+            // word['no'] += 1;
+            // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
+          }
+
+
+          index += 1;
+
+          // execute loop
+          if (index > words.length - 1) {
+            if ($loopCheckBox.prop('checked')) {
+              index = 0;
+            } else {
+              clearInterval(timer);
+              $toggleBtn.text('Start');
+            }
+          }
+
+          // console.log('after update', store.get('words'));
+          // console.log('updated index', index);
         });
 
+        // notifier.on('click', (notifierObject, options) => {
+        //   console.log('clicked');
+        //   // // index += 1;
+        //   // // execute loop
+        //   // if (index > words.length - 1) {
+        //   //   if ($loopCheckBox.prop('checked')) {
+        //   //     index = 0;
+        //   //   } else {
+        //   //     clearInterval(timer);
+        //   //     $toggleBtn.text('Start');
+        //   //   }
+        //   // }
+        // });
+
+        // notifier.on('timeout', (notifierObject, options) => {
+        //   console.log('timed out');
+        //   // index += 1;
+        //   // execute loop
+        //   // if (index > words.length - 1) {
+        //   //   if ($loopCheckBox.prop('checked')) {
+        //   //     index = 0;
+        //   //   } else {
+        //   //     clearInterval(timer);
+        //   //     $toggleBtn.text('Start');
+        //   //   }
+        //   // }
+        // })
+
+        // // execute loop
+        // if (index > words.length - 1) {
+        //   if ($loopCheckBox.prop('checked')) {
+        //     index = 0;
+        //   } else {
+        //     clearInterval(timer);
+        //     $toggleBtn.text('Start');
+        //   }
+        // }
         // notification = new window.Notification(notificationOptions.title, notificationOptions);
         // notifier.notify(notificationOptions);
 
@@ -237,17 +321,17 @@ $toggleBtn.on('click', (evt) => {
         //   }
         // }
 
-        index += 1;
+        // index += 1;
 
-        // execute loop
-        if (index > words.length - 1) {
-          if ($loopCheckBox.prop('checked')) {
-            index = 0;
-          } else {
-            clearInterval(timer);
-            $toggleBtn.text('Start');
-          }
-        }
+        // // execute loop
+        // if (index > words.length - 1) {
+        //   if ($loopCheckBox.prop('checked')) {
+        //     index = 0;
+        //   } else {
+        //     clearInterval(timer);
+        //     $toggleBtn.text('Start');
+        //   }
+        // }
       });
 
       res.on('end', () => {
@@ -260,5 +344,18 @@ $toggleBtn.on('click', (evt) => {
     });
 
     req.end();
+
+    // // update index
+    // index += 1;
+
+    // // execute loop
+    // if (index > words.length - 1) {
+    //   if ($loopCheckBox.prop('checked')) {
+    //     index = 0;
+    //   } else {
+    //     clearInterval(timer);
+    //     $toggleBtn.text('Start');
+    //   }
+    // }
   }, interval);
 })
