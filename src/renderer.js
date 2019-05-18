@@ -228,6 +228,7 @@ $toggleBtn.on('click', (evt) => {
         }
 
         notifier.notify(notificationOptions, function(error, response, metadata) {
+          console.log('NOTIFIED!!!');
           // console.log(store.set(`words.${index}`, 'hello'));
           const currentYesCount = store.get(`words.${index}.yes`);
           const currentNoCount = store.get(`words.${index}.no`);
@@ -249,6 +250,7 @@ $toggleBtn.on('click', (evt) => {
             // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
           }
 
+          console.log('Index updated.');
 
           index += 1;
 
@@ -261,6 +263,18 @@ $toggleBtn.on('click', (evt) => {
               $toggleBtn.text('Start');
             }
           }
+
+          // index += 1;
+
+          // // execute loop
+          // if (index > words.length - 1) {
+          //   if ($loopCheckBox.prop('checked')) {
+          //     index = 0;
+          //   } else {
+          //     clearInterval(timer);
+          //     $toggleBtn.text('Start');
+          //   }
+          // }
 
           // console.log('after update', store.get('words'));
           // console.log('updated index', index);
@@ -281,8 +295,8 @@ $toggleBtn.on('click', (evt) => {
         // });
 
         // notifier.on('timeout', (notifierObject, options) => {
-        //   console.log('timed out');
-        //   // index += 1;
+        //   console.log('TIMED OUT');
+        //   index += 1;
         //   // execute loop
         //   // if (index > words.length - 1) {
         //   //   if ($loopCheckBox.prop('checked')) {
@@ -339,7 +353,7 @@ $toggleBtn.on('click', (evt) => {
       });
     });
 
-    req.on('error', err => {
+    req.on('error', (err) => {
       console.error(`Problem handling request: ${err.message}`);
     });
 
