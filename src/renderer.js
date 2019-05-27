@@ -107,7 +107,7 @@ ipcRenderer.on('selected-file', (evt, path) => {
     // retrieve words/phrases (and shuffle the result)
     // words = miscHelpers.shuffle(miscHelpers.getSanitizedWords(data));
     // miscHelpers.getSanitizedWords(data)
-    const wordsArr = miscHelpers.getWordsListData(miscHelpers.getSanitizedWords(data));
+    const wordsArr = miscHelpers.shuffle(miscHelpers.getWordsListData(miscHelpers.getSanitizedWords(data)));
     // create/update list
     store.set('name', fileName);
     store.set('words', wordsArr);

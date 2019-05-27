@@ -12,8 +12,8 @@ module.exports = {
     while (arr.length) {
       let randomIdx = Math.floor(Math.random() * arr.length);
       let randomItem = arr.splice(randomIdx, 1)[0];
-      shuffledItems.push({ word: randomItem, yes: 0, no: 0 });
-      // shuffledItems.push(randomItem);
+      // shuffledItems.push({ word: randomItem, yes: 0, no: 0 });
+      shuffledItems.push(randomItem);
     }
 
     return shuffledItems;
