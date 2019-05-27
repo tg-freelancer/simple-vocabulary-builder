@@ -164,7 +164,11 @@ $toggleBtn.on('click', (evt) => {
     return;
   }
 
+  // sets the interval
   interval = Number($intervalInput.val()) * ONE_MINUTE;
+
+  // assigns the words list (if not already selected)
+  words = words || store.get('words');
 
   // if valid, clear the input values
   // $form[0].reset();
@@ -250,9 +254,9 @@ $toggleBtn.on('click', (evt) => {
             // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
           }
 
-          console.log('Index updated.');
-
           index += 1;
+
+          console.log('Index updated.');
 
           // execute loop
           if (index > words.length - 1) {
