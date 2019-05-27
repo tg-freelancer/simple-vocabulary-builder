@@ -1,50 +1,5 @@
 // navigator.serviceWorker.register('./sw.js');
 
-// function showNotification() {
-//   Notification.requestPermission(function(result) {
-//     if (result === 'granted') {
-//       navigator.serviceWorker.ready.then(function(registration) {
-//         registration.showNotification('Vibration Sample', {
-//           body: 'Buzz! Buzz!'
-//           // icon: '../images/touch/chrome-touch-icon-192x192.png',
-//           // vibrate: [200, 100, 200, 100, 200, 100, 200],
-//           // tag: 'vibration-sample'
-//         });
-//       });
-//     } else {
-//       console.log('permission denied');
-//     }
-//   });
-// }
-
-// // showNotification();
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', function() {
-//     navigator.serviceWorker.register('./sw.js').then(function(registration) {
-//       // Registration was successful
-//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//       // registration.showNotification('New message from Alice', {
-//       //     body: 'Hello world',
-//       //     actions: [
-//       //         {action: 'like', title: 'Like'},
-//       //         {action: 'reply', title: 'Reply'}
-//       //     ]
-//       // });
-//     }, function(err) {
-//       // registration failed :(
-//       console.log('ServiceWorker registration failed: ', err);
-//     });
-//   });
-// }
-
-// ServiceWorkerRegistration.showNotification('New message from Alice', {
-//     body: 'Hello world',
-//     actions: [
-//         {action: 'like', title: 'Like'},
-//         {action: 'reply', title: 'Reply'}
-//     ]
-// });
-
 // modules required
 const $ = require('jquery');
 const notifier = require('node-notifier');
@@ -107,7 +62,7 @@ ipcRenderer.on('selected-file', (evt, path) => {
     // retrieve words/phrases (and shuffle the result)
     // words = miscHelpers.shuffle(miscHelpers.getSanitizedWords(data));
     // miscHelpers.getSanitizedWords(data)
-    const wordsArr = miscHelpers.shuffle(miscHelpers.getWordsListData(miscHelpers.getSanitizedWords(data)));
+    const wordsArr = dictHelpers.getWordsListData(miscHelpers.getSanitizedWords(data));
     // create/update list
     store.set('name', fileName);
     store.set('words', wordsArr);
@@ -170,6 +125,9 @@ $toggleBtn.on('click', (evt) => {
   // assigns the words list (if not already selected)
   words = words || store.get('words');
 
+  // reorders the words list based on the score of each word
+  words = dictHelpers.getOrderedWords(words);
+
   // if valid, clear the input values
   // $form[0].reset();
 
@@ -219,8 +177,8 @@ $toggleBtn.on('click', (evt) => {
           title: currentWordObj['word'],
           message: definition || DEFINITION_NOT_FOUND_MSG,
           sound: false,
-          wait: true,
-          // timeout: interval,
+          // wait: true,
+          timeout: interval,
           closeLabel: 'Close',
           actions: [yesIcon, noIcon],
           dropdownLabel: 'Remember?',
@@ -234,22 +192,26 @@ $toggleBtn.on('click', (evt) => {
         notifier.notify(notificationOptions, function(error, response, metadata) {
           console.log('NOTIFIED!!!');
           // console.log(store.set(`words.${index}`, 'hello'));
-          const currentYesCount = store.get(`words.${index}.yes`);
-          const currentNoCount = store.get(`words.${index}.no`);
+          // const currentYesCount = store.get(`words.${index}.yes`);
+          // const currentNoCount = store.get(`words.${index}.no`);
+          const currentScore = store.get(`words.${index}.score`);
 
           // console.log(`currentYesCount for ${store.get(`words.${index}`)}`, currentYesCount);
           // console.log(`currentNoCount for ${store.get(`words.${index}`)}`, currentNoCount);
 
           // update database based on the user response
           if (metadata.activationValue === yesIcon) {
-            store.set(`words.${index}.yes`, currentYesCount + 1);
-            console.log(currentWordObj['word'], 'yes!!!');
+            // store.set(`words.${index}.yes`, currentScore + 1);
+            store.set(`words.${index}.score`, currentScore + 1);
+            console.log(store.get(`words.${index}.word`), 'yes!!!');
             // store.set(`words[]`word['yes'] += 1;
             // console.log(store.set('words')[index], { word: 'kokok', lplp: 'lplp' });
             // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
           } else if (metadata.activationValue === noIcon) {
-            store.set(`words.${index}.no`, currentNoCount + 1);
-            console.log(currentWordObj['word'], 'no...');
+            // store.set(`words.${index}.no`, currentNoCount + 1);
+            store.set(`words.${index}.score`, currentScore - 1);
+            console.log(store.get(`words.${index}.word`), 'no...');
+            // console.log(currentWordObj['word'], 'no...');
             // word['no'] += 1;
             // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
           }
@@ -363,8 +325,9 @@ $toggleBtn.on('click', (evt) => {
 
     req.end();
 
-    // // update index
     // index += 1;
+
+    // console.log('Index updated.');
 
     // // execute loop
     // if (index > words.length - 1) {

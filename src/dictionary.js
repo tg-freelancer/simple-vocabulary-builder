@@ -10,6 +10,28 @@ module.exports = {
     const meanings = json.meaning || json[0].meaning;
     return meanings[Object.keys(meanings)[0]][0].definition;
   },
+  getOrderedWords(words) {
+    return words.sort((word1, word2) => {
+      return word1.score - word2.score;
+    });
+  },
+  // returns the words list data
+  getWordsListData(arr) {
+    return arr.map((item) => {
+      // return { word: item, yes: 0, no: 0 };
+      return { word: item, score: 0 };
+    });
+    // const result = [];
+
+    // while (arr.length) {
+    //   let randomIdx = Math.floor(Math.random() * arr.length);
+    //   let randomItem = arr.splice(randomIdx, 1)[0];
+    //   result.push({ word: randomItem, yes: 0, no: 0 });
+    //   // result.push(randomItem);
+    // }
+
+    // return shuffledItems;
+  },
   isValidInterval($interval) {
     const errorType = $interval[0].validity;
     return !(errorType.valueMissing || errorType.patternMismatch);
