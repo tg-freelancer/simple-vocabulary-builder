@@ -15,7 +15,7 @@
         <a class="about">About</a>
       </li>
       <li>
-        <a class="settings">Settings</a>
+        <a class="stats">Stats</a>
       </li>
       <li>
         <a class="contact">Contact</a>
@@ -37,7 +37,7 @@
                 <label>Create a new words list (.txt file)</label>
               </dt>
               <dd>
-                <button class="select-file-btn">Select file</button>
+                <button class="select-file-btn">Select a file</button>
                 <span class="selected-file"></span>
                 <span class="error file"></span>
               </dd>
@@ -62,7 +62,7 @@
     </main>
   </div>
   <!-- template to be precompiled -->
-  <script id="container" type="text/x-handlebars-template">
+  <script id="template_container" type="text/x-handlebars-template">
     {{{contents}}}
   </script>
   <!-- index page -->
@@ -80,7 +80,7 @@
               <label>Create a new words list (.txt file)</label>
             </dt>
             <dd>
-              <button class="select-file-btn">Select file</button>
+              <button class="select-file-btn">Select a file</button>
               <span class="selected-file"></span>
               <span class="error file"></span>
             </dd>
@@ -106,13 +106,31 @@
   <!-- about page -->
   <script id="about" type="text/x-handlebars-template">
     <div class="contents">
-      about page
+      <p><a>Simple Volabulary Builder</a> is a tool designed to help you build your vocabulary in as effortless a way as possible. Once you create a words list, each word in the list will appear on desktop notifications.</p>
+
+      <p></p>
     </div>
   </script>
   <!-- settings page -->
-  <script id="settings" type="text/x-handlebars-template">
+  <script id="stats" type="text/x-handlebars-template">
     <div class="contents">
-      settings page
+      <h2>Stats</h2>
+      <table class="stats_table">
+        <thead>
+          <tr>
+            <th>Word / Phrases</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each words}}
+          <tr>
+            <td>{{this.word}}</a></td>
+            <td>{{this.score}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
   </script>
   <!-- contact page -->

@@ -15,6 +15,7 @@ const store = new Store();
 const ONE_MINUTE = 60 * 1000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
+const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
 
 const $form = $('form');
 const $selectFileBtn = $form.find('.select-file-btn');
@@ -31,6 +32,15 @@ let words;
 
 // display the current word list
 $('.current_words_list').text(store.get('name'));
+
+$('.container').on('click', (evt) => {
+  if ($(evt.target).is('a')) {
+    evt.preventDefault();
+    shell.openExternal(GITHUB_REPO_URL);
+  }
+  // const url = $(evt.target).attr('href');
+  // shell.openExternal('www.google.com');
+});
 
 // open the select file dialog window
 $selectFileBtn.on('click', (evt) => {
