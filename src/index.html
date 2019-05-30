@@ -26,7 +26,7 @@
     <main>
       <div class="contents">
         <header>
-          <h1>Build your vocabulary effortlessly</h1>
+          <h1>Simple Vocabulary Builder</h1>
           <h2>Current words list: <span class="current_words_list"></span></h2>
         </header>
 
@@ -125,7 +125,7 @@
         <tbody>
           {{#each words}}
           <tr>
-            <td>{{this.word}}</a></td>
+            <td><a>{{this.word}}</a></td>
             <td>{{this.score}}</td>
           </tr>
           {{/each}}
@@ -145,5 +145,6 @@
   <!--<script>require('./compiler')</script>-->
   <script>require('./renderer')</script>
   <script>require('./links_handler')</script>
+  <script>require('./word_links')</script>
 </body>
 </html>

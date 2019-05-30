@@ -124,6 +124,10 @@ table {
   text-align: left;
   /*border: 3px solid #eaeaea;*/
 }
+/*
+table a:hover {
+  cursor: pointer;
+}*/
 
 thead {
   text-align: center;
@@ -131,11 +135,23 @@ thead {
 
 tr {
   /*border-bottom: 1px solid #eaeaea;*/
+  border-radius: 5px;
   height: 30px;
 }
 
 tr:last-of-type {
   border: none;
+}
+
+tbody tr {
+  transition: background 0.1s ease-in-out;
+  /*transition: color 0.1s ease-in-out;*/
+}
+
+tbody tr:hover {
+  cursor: pointer;
+  color: #E6DEFF;
+  background: #8400FF;
 }
 
 tbody td {
