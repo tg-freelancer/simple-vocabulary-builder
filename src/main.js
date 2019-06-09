@@ -31,6 +31,19 @@ app.on('ready', () => {
   // });
 
   ipcMain.on('open-file-dialog', (evt) => {
+    const options = {
+      type: 'info',
+      title: 'Information',
+      message: 'When you select a new words list, the data for the previous words list (if any) will be deleted.\nAre you sure you want to continue?',
+      buttons: ['Yes', 'No']
+    };
+
+    dialog.showMessageBox(options, (index) => {
+      evt.sender.send('new-list-confirmation', index);
+    });
+  });
+
+  ipcMain.on('select-new-list', (evt) => {
     dialog.showOpenDialog(mainWindow, {
       properties: ['openFile'],
       filters: [{
@@ -42,7 +55,7 @@ app.on('ready', () => {
         evt.sender.send('selected-file', files);
       }
     });
-  });
+  })
 });
 
 app.on('window-all-closed', function () {

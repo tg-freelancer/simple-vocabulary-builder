@@ -47,6 +47,13 @@ $selectFileBtn.on('click', (evt) => {
   ipcRenderer.send('open-file-dialog');
 });
 
+// check the confirmation on overwriting the words list
+ipcRenderer.on('new-list-confirmation', (evt, index) => {
+  if (index === 0) {
+    ipcRenderer.send('select-new-list');
+  }
+});
+
 // process the file name and contents
 ipcRenderer.on('selected-file', (evt, path) => {
   const pathStr = path[0];
@@ -206,7 +213,8 @@ $toggleBtn.on('click', (evt) => {
         };
 
         if (!definition) {
-          notificationOptions.open = `https://google.com/search?q=${currentWordObj['word']}`
+          // notificationOptions.open = `https://google.com/search?q=${currentWordObj['word']}`
+          notificationOptions.open = `https://google.com/search?q=${currentWord}`
         }
 
         console.log('currentWord: ', currentWord);
