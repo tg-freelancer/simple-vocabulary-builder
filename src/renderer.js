@@ -6,6 +6,7 @@ const notifier = require('node-notifier');
 const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
 const http = require("https");
+const path = require('path');
 const dictHelpers = require('./dictionary');
 const miscHelpers = require('./misc');
 const Store = require('electron-store');
@@ -175,14 +176,14 @@ $toggleBtn.on('click', (evt) => {
 
     let definition;
     // let path = encodeURI(`/?define=${currentWordObj['word']}&lang=${targetLang}`);
-    let path = encodeURI(`/?define=${currentWord}&lang=${targetLang}`);
+    let apiPath = encodeURI(`/?define=${currentWord}&lang=${targetLang}`);
 
     // set 'Content-Type' to 'text/plain', rather than 'application/json'
     // due to the original API response not being formated properly
     const options = {
       host: API_HOST_URL,
       port: '443',
-      path: path,
+      path: apiPath,
       headers: {
         'Content-Type': 'text/plain'
       }
@@ -203,13 +204,14 @@ $toggleBtn.on('click', (evt) => {
           // title: currentWordObj['word'],
           title: currentWord,
           message: definition || DEFINITION_NOT_FOUND_MSG,
+          icon: path.join(__dirname, '../assets/cat_meditating.jpg'),
           sound: false,
           // wait: true,
           timeout: interval,
           closeLabel: 'Close',
           actions: [yesIcon, noIcon],
           dropdownLabel: 'Remember?',
-          reply: false
+          // reply: false
         };
 
         if (!definition) {
