@@ -17,9 +17,9 @@ module.exports = {
   },
   // returns the words list data
   getWordsListData(arr) {
-    return arr.map((item) => {
+    return arr.map((item, id) => {
       // return { word: item, yes: 0, no: 0 };
-      return { word: item, score: 0 };
+      return { id: id, word: item, score: 0 };
     });
     // const result = [];
 
@@ -87,5 +87,17 @@ module.exports = {
   getFileExt(fileName) {
     const components = fileName.split(/\./);
     return miscHelpers.getLastElement(components);
+  },
+  getId(word) {
+    const words = store.get('words');
+
+    for (let i = 0; i < words.length; i += 1) {
+      const currentWord = words[i].word;
+      if (word === currentWord) {
+        return words[i].id;
+      }
+    }
+
+    return null;
   }
 };

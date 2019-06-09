@@ -137,6 +137,7 @@ $toggleBtn.on('click', (evt) => {
 
   // reorders the words list based on the score of each word
   words = dictHelpers.getOrderedWords(words);
+  // words = miscHelpers.shuffle(words);
 
   // if valid, clear the input values
   // $form[0].reset();
@@ -147,22 +148,30 @@ $toggleBtn.on('click', (evt) => {
   let notificationOptions;
   let notification;
 
+  // index !== id; index in terms of the sorted arr
   index = index || 0;
 
   // start the timer and change the toggle btn text
   $(evt.target).text('Stop');
 
   timer = setInterval(() => {
+    // log the current states
     // console.log(`index: ${index}`);
-    currentWordObj = words[index];
-    console.log('current index', index);
-    console.log('current state', store.get('words'));
+    // currentWordObj = words[index];
+    let currentIndex = index;
+    console.log('current state:', store.get('words'));
+    // currentWord = store.get(`words.${currentIndex}.word`);
+    currentWord = words[currentIndex].word;
+    // console.log('current index', index);
+    // console.log('current state', store.get('words'));
     // console.log(`currentWordObj: ${currentWordObj}, index: ${index}`);
+
     let definition;
-    let path = encodeURI(`/?define=${currentWordObj['word']}&lang=${targetLang}`);
+    // let path = encodeURI(`/?define=${currentWordObj['word']}&lang=${targetLang}`);
+    let path = encodeURI(`/?define=${currentWord}&lang=${targetLang}`);
 
     // set 'Content-Type' to 'text/plain', rather than 'application/json'
-    // due to the original API response supposedly not being formated properly
+    // due to the original API response not being formated properly
     const options = {
       host: API_HOST_URL,
       port: '443',
@@ -184,7 +193,8 @@ $toggleBtn.on('click', (evt) => {
         // const url = definition ? null : `https://duckduckgo.com/?q=${definition}`;
         // console.log(url);
         notificationOptions = {
-          title: currentWordObj['word'],
+          // title: currentWordObj['word'],
+          title: currentWord,
           message: definition || DEFINITION_NOT_FOUND_MSG,
           sound: false,
           // wait: true,
@@ -199,28 +209,54 @@ $toggleBtn.on('click', (evt) => {
           notificationOptions.open = `https://google.com/search?q=${currentWordObj['word']}`
         }
 
+        console.log('currentWord: ', currentWord);
+        // console.log('currentWord within notificationOptions: ', store.get(`words.${index}`));
+
         notifier.notify(notificationOptions, function(error, response, metadata) {
+          // !!! must reference the "id" for each word to be updated
           console.log('NOTIFIED!!!');
+
+          const id = dictHelpers.getId(currentWord);
+          console.log('id', id);
           // console.log(store.set(`words.${index}`, 'hello'));
           // const currentYesCount = store.get(`words.${index}.yes`);
           // const currentNoCount = store.get(`words.${index}.no`);
-          const currentScore = store.get(`words.${index}.score`);
+          // console.log(`store.get('words'): `, store.get('words'));
+          // let obj = store.get('words');
+          // obj[1].score = 100;
+          // console.log(`store.get('words') (after the update): `, store.get('words'));
 
+          // const currentScore = store.get(`words.${index}.score`);
+          console.log('currentWord within cb', currentWord);
+          // const currentScore = store.get(`words.${currentIndex}.score`);
+          const currentScore = store.get(`words.${id}.score`);
           // console.log(`currentYesCount for ${store.get(`words.${index}`)}`, currentYesCount);
           // console.log(`currentNoCount for ${store.get(`words.${index}`)}`, currentNoCount);
 
+          // console.log('currentWord within cb: ', store.get(`words.${index}`));
           // update database based on the user response
           if (metadata.activationValue === yesIcon) {
-            // store.set(`words.${index}.yes`, currentScore + 1);
-            store.set(`words.${index}.score`, currentScore + 1);
-            console.log(store.get(`words.${index}.word`), 'yes!!!');
+            // // store.set(`words.${index}.yes`, currentScore + 1);
+            // store.set(`words.${index}.score`, currentScore + 1);
+            // console.log(store.get(`words.${index}.word`), 'yes!!!');
+
+            store.set(`words.${id}.score`, currentScore + 1);
+            console.log(store.get(`words.${id}.word`), 'yes!!!');
+
             // store.set(`words[]`word['yes'] += 1;
             // console.log(store.set('words')[index], { word: 'kokok', lplp: 'lplp' });
             // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
           } else if (metadata.activationValue === noIcon) {
             // store.set(`words.${index}.no`, currentNoCount + 1);
-            store.set(`words.${index}.score`, currentScore - 1);
-            console.log(store.get(`words.${index}.word`), 'no...');
+            let updatedScore = currentScore - 1;
+            if (updatedScore < 0) updatedScore = 0;
+
+            // store.set(`words.${index}.score`, updatedScore);
+            // console.log(store.get(`words.${index}.word`), 'no...');
+
+            store.set(`words.${id}.score`, updatedScore);
+            console.log(store.get(`words.${id}.word`), 'no...');
+
             // console.log(currentWordObj['word'], 'no...');
             // word['no'] += 1;
             // console.log(word['word'], `yes: ${word['yes']}, no: ${word['no']}`);
