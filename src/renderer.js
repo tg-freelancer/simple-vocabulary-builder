@@ -35,9 +35,18 @@ let words;
 $('.current_words_list').text(store.get('name'));
 
 $('.container').on('click', (evt) => {
-  if ($(evt.target).is('a')) {
-    evt.preventDefault();
-    shell.openExternal(GITHUB_REPO_URL);
+  const $e = $(evt.target);
+  if ($e.is('a')) {
+    const url = $e.attr('href');
+
+    if (url !== '#') {
+      evt.preventDefault();
+      console.log(evt.currentTarget);
+      shell.openExternal(url); 
+    } else {
+      const pageName = $e.attr('data-link-destination');
+      $('aside a.contact').trigger('click');
+    }
   }
   // const url = $(evt.target).attr('href');
   // shell.openExternal('www.google.com');
