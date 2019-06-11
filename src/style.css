@@ -70,6 +70,14 @@ p {
   text-decoration: underline;
 }
 
+/*--- aside ---*/
+
+svg {
+  width: 16px;
+  vertical-align: top;
+  margin-right: 7px; 
+}
+
 /*--- main ---*/
 
 .container {
