@@ -45,11 +45,9 @@ $('.container').on('click', (evt) => {
       shell.openExternal(url); 
     } else {
       const pageName = $e.attr('data-link-destination');
-      $('aside a.contact').trigger('click');
+      $(`aside a.${pageName}`).trigger('click');
     }
   }
-  // const url = $(evt.target).attr('href');
-  // shell.openExternal('www.google.com');
 });
 
 // open the select file dialog window

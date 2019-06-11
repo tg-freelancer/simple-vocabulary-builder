@@ -25,6 +25,7 @@ $('aside a').on('click', (evt) => {
     const words = store.get('words');
     // console.dir(words);
     const statsContents = statsTmplScript({ words: words });
+    
     // console.log(statsContents);
     $('.contents').replaceWith(statsContents);
   }

@@ -27,7 +27,7 @@
       <div class="contents">
         <header>
           <h1>Build your vocabulary effortlessly</h1>
-          <h2>Current words list: <span class="current_words_list"></span></h2>
+          <h3>Current words list: <span class="current_words_list"></span></h3>
         </header>
 
         <form>
@@ -70,7 +70,7 @@
     <div class="contents">
       <header>
         <h1>Build your vocabulary effortlessly</h1>
-        <h2>Current words list: <span class="current_words_list"></span></h2>
+        <h3>Current words list: <span class="current_words_list"></span></h3>
       </header>
 
       <form>
@@ -106,13 +106,12 @@
   <!-- about page -->
   <script id="about" type="text/x-handlebars-template">
     <div class="contents about">
+      <h2>About</h2>
       <p><a href="https://github.com/tg-freelancer/simple-vocabulary-builder">Simple Vocabulary Builder</a> is a simple desktop application designed to help you retain the words / phrases you have learnt in as effortless a manner as possible.</p>
 
       <p>The application will register your words list, display each word in the list via a desktop notification, and let you interact with the notification by having you verify whether or not you remember the word's definition.</p>
 
       <p>See the user guide for how to use the application.</p>
-
-      <p><a href="#" data-link-destination="contact-page">Contact the developer</a> for bugs, improvements, or general feedback.</p>
     </div>
   </script>
   <!-- settings page -->
@@ -129,7 +128,7 @@
         <tbody>
           {{#each words}}
           <tr>
-            <td><a>{{this.word}}</a></td>
+            <td><a href='https://www.google.com/search?q={{this.word}}'>{{this.word}}</a></td>
             <td>{{this.score}}</td>
           </tr>
           {{/each}}
@@ -140,6 +139,8 @@
   <!-- contact page -->
   <script id="contact" type="text/x-handlebars-template">
     <div class="contents contact">
+      <h2>Contact</h2>
+      <p><!--<a href="#" data-link-destination="contact">-->Contact the developer<!--</a>--> for bugs, improvements, or general feedback.</p>
       <ul>
         <li>Twitter: <a href="https://twitter.com/tg_freelancer">@tg_freelancer</a></li>
         <li>Github: <a href="https://github.com/tg-freelancer">@tg-freelancer</a></li>
