@@ -1,17 +1,20 @@
 {
   "name": "vocabulary_builder",
-  "productName": "Simple Vocabulary Builder",
+  "productName": "Simple-Vocabulary-Builder",
   "version": "1.0.0",
-  "description": "Simple vocabulary builder",
+  "description": "Simple Vocabulary Builder",
   "main": "src/main.js",
   "scripts": {
+    "build": "rimraf Simple* && electron-packager . --platform=darwin,win32,linux --arch=x64 --icon=demo",
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tg",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^4.1.4"
+    "electron": "^4.1.4",
+    "electron-packager": "^13.1.1",
+    "rimraf": "^2.6.3"
   },
   "dependencies": {
     "electron-store": "^3.2.0",

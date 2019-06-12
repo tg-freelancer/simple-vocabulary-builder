@@ -5,11 +5,11 @@ console.log('app.getPath("userData")', app.getPath('userData'));
 let mainWindow;
 
 function createWindow() {
-  const appName = app.getName();
+  // const appName = app.getName();
   const menuTemplate = [
     // About menu
     {
-      label: appName,
+      label: 'Simple Vocabulary Builder',
       submenu: [{
         label: 'About',
         click() {
@@ -60,6 +60,7 @@ function createWindow() {
 
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
+
   // const tray = new Tray(path.join(__dirname, '../assets/cat_meditating.jpg'));
   // const contextMenu = Menu.buildFromTemplate([
   //   {
