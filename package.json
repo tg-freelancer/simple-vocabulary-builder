@@ -1,5 +1,6 @@
 {
   "name": "vocabulary_builder",
+  "productName": "Simple Vocabulary Builder",
   "version": "1.0.0",
   "description": "Simple vocabulary builder",
   "main": "src/main.js",

@@ -1,10 +1,83 @@
-const {app, BrowserWindow, ipcMain, dialog} = require('electron');
+const {app, BrowserWindow, ipcMain, dialog, Tray, Menu, shell} = require('electron');
 const path = require('path');
 console.log('app.getPath("userData")', app.getPath('userData'));
 
 let mainWindow;
 
-app.on('ready', () => {
+function createWindow() {
+  const appName = app.getName();
+  const menuTemplate = [
+    // About menu
+    {
+      label: appName,
+      submenu: [{
+        label: 'About',
+        click() {
+          shell.openExternal('https://transborder.global/');
+        }
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Quit',
+        accelerator: 'CmdOrCtrl+Q',
+        click() {
+          app.quit();
+        }
+      }]
+    },
+    // View menu
+    {
+      label: 'View',
+      submenu: [{
+        label: 'Reroad',
+        accelerator: 'CmdOrCtrl+R',
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.reload();
+        }
+      }]
+    },
+    // Window menu
+    {
+      label: 'Window',
+      submenu: [{
+        label: 'Close',
+        accelerator: 'CmdOrCtrl+W',
+        role: 'close',
+      }, {
+        label: 'Minimise',
+        accelerator: 'CmdOrCtrl+M',
+        role: 'minimize'
+      }, {
+        label: 'Reopen',
+        accelerator: 'CmdOrCtrl+Shift+T',
+        key: 'reopenMenuItem',
+        click() {
+          app.emit('activate');
+        }
+      }]
+    }
+  ];
+
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
+  // const tray = new Tray(path.join(__dirname, '../assets/cat_meditating.jpg'));
+  // const contextMenu = Menu.buildFromTemplate([
+  //   {
+  //     label: 'Hi',
+  //     click: () => {
+  //       console.log('hello');
+  //     }
+  //   },
+  //   {
+  //     label: 'Bonjour',
+  //     click: () => {
+  //       console.log('bonjour');
+  //     }
+  //   }
+  // ]);
+
+  // tray.setContextMenu(contextMenu);
+
   mainWindow = new BrowserWindow({
     width: 560,
     minWidth: 500,
@@ -57,6 +130,10 @@ app.on('ready', () => {
       }
     });
   })
+}
+
+app.on('ready', () => {
+  createWindow();
 });
 
 app.on('window-all-closed', function () {
