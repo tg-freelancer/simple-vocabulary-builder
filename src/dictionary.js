@@ -6,7 +6,6 @@ const store = new Store();
 module.exports = {
   getFirstDefinition(json) {
     if (!json) return null;
-    // console.log(`json[0]: `, json[0])
     const meanings = json.meaning || json[0].meaning;
     return meanings[Object.keys(meanings)[0]][0].definition;
   },
@@ -18,27 +17,14 @@ module.exports = {
   // returns the words list data
   getWordsListData(arr) {
     return arr.map((item, id) => {
-      // return { word: item, yes: 0, no: 0 };
       return { id: id, word: item, score: 0 };
     });
-    // const result = [];
-
-    // while (arr.length) {
-    //   let randomIdx = Math.floor(Math.random() * arr.length);
-    //   let randomItem = arr.splice(randomIdx, 1)[0];
-    //   result.push({ word: randomItem, yes: 0, no: 0 });
-    //   // result.push(randomItem);
-    // }
-
-    // return shuffledItems;
   },
   isValidInterval($interval) {
     const errorType = $interval[0].validity;
     return !(errorType.valueMissing || errorType.patternMismatch);
   },
   isFileSelected($file) {
-    // return $file.attr('data-file-selected');
-
     // checks if a words list already exists in the database
     return store.has('words');
   },

@@ -5,7 +5,6 @@ console.log('app.getPath("userData")', app.getPath('userData'));
 let mainWindow;
 
 function createWindow() {
-  // const appName = app.getName();
   const menuTemplate = [
     // About menu
     {
@@ -61,41 +60,20 @@ function createWindow() {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 
-  // const tray = new Tray(path.join(__dirname, '../assets/cat_meditating.jpg'));
-  // const contextMenu = Menu.buildFromTemplate([
-  //   {
-  //     label: 'Hi',
-  //     click: () => {
-  //       console.log('hello');
-  //     }
-  //   },
-  //   {
-  //     label: 'Bonjour',
-  //     click: () => {
-  //       console.log('bonjour');
-  //     }
-  //   }
-  // ]);
-
-  // tray.setContextMenu(contextMenu);
-
   mainWindow = new BrowserWindow({
     width: 560,
     minWidth: 500,
     maxWidth: 700,
     height: 570,
-    // icon: path.join(__dirname, '../assets/cat_meditating.jpg'),
     webPreferences: {
       nodeIntegration: true
     },
-    // show: false
   });
 
   // mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  // mainWindow.loadFile(path.join(__dirname, 'layout.html'));
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null
