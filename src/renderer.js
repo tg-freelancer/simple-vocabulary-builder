@@ -1,5 +1,6 @@
 // modules required
 const $ = require('jquery');
+const precompiler = require('./precompiler');
 const notifier = require('node-notifier');
 const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
@@ -15,9 +16,10 @@ const store = new Store();
 const ONE_MINUTE = 60 * 1000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
-const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
+// const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
 
-const $form = $('form');
+const $form = $(precompiler.indexHtml).find('form');
+// const $form = $('form');
 const $selectFileBtn = $form.find('.select-file-btn');
 const $toggleBtn = $form.find('.toggle-btn');
 const $intervalInput = $('#interval');
