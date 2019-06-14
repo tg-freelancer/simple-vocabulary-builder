@@ -30,7 +30,7 @@
           <h3>Current words list: <span class="current_words_list"></span></h3>
         </header>
 
-        <form>
+        <form novalidate>
           <fieldset>
             <dl>
               <dt>
@@ -149,11 +149,11 @@
       </ul>
     </div>
   </script>
-  <script>require('./precompiler')</script>
   <!-- <script>require('./create_index_tmpl')</script> -->
   <!-- <script>require('./index_compiler')</script> -->
   <!--<script>require('./compiler')</script>-->
   <script>require('./renderer')</script>
+  <script>require('./preprocess')</script>
   <script>require('./links_handler')</script>
   <!-- <script>require('./word_links')</script> -->
 </body>

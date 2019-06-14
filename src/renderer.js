@@ -1,6 +1,5 @@
-// modules required
 const $ = require('jquery');
-const precompiler = require('./precompiler');
+// const preprocess = require('./preprocess');
 const notifier = require('node-notifier');
 const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
@@ -18,8 +17,7 @@ const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to f
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 // const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
 
-const $form = $(precompiler.indexHtml).find('form');
-// const $form = $('form');
+const $form = $('form');
 const $selectFileBtn = $form.find('.select-file-btn');
 const $toggleBtn = $form.find('.toggle-btn');
 const $intervalInput = $('#interval');
@@ -194,10 +192,7 @@ $toggleBtn.on('click', (evt) => {
         const json = data[0] === '<' ? null : JSON.parse(data);
         definition = dictHelpers.getFirstDefinition(json);
 
-        // const url = definition ? null : `https://duckduckgo.com/?q=${definition}`;
-        // console.log(url);
         notificationOptions = {
-          // title: currentWordObj['word'],
           title: currentWord,
           message: definition || DEFINITION_NOT_FOUND_MSG,
           icon: path.join(__dirname, '../assets/cat_meditating.jpg'),
@@ -260,3 +255,5 @@ $toggleBtn.on('click', (evt) => {
     }
   }, interval);
 })
+
+store.set('indexHtml', $('main').html());
