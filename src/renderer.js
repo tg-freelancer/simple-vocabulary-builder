@@ -1,7 +1,7 @@
 const $ = require('jquery');
 // const preprocess = require('./preprocess');
 const notifier = require('node-notifier');
-const {ipcRenderer, shell} = require('electron');
+const {ipcRenderer, shell, remote} = require('electron');
 const fs = require('fs');
 const os = require('os');
 const http = require("https");
@@ -12,7 +12,7 @@ const Store = require('electron-store');
 const store = new Store();
 
 // useful constants
-const ONE_MINUTE = 60 * 1000;
+const MILLISECONDS_IN_MINUTES = 60 * 1000;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 // const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
@@ -140,8 +140,23 @@ $toggleBtn.on('click', (evt) => {
     return;
   }
 
+  // let the user know the review process has started
+  const minutes = Number($intervalInput.val());
+  const initialNotificationOptions = {
+    icon: path.join(__dirname, '../assets/cat_meditating.jpg'),
+    sound: false,
+    closeLabel: 'Okay',
+    title: 'Simple Vocabulary Builder',
+    message: `The revision will start in ${minutes} minutes!`
+  };
+
+  notifier.notify(initialNotificationOptions);
+
+  // minimise the window if the inputs are valid
+  remote.BrowserWindow.getFocusedWindow().minimize();
+
   // sets the interval
-  interval = Number($intervalInput.val()) * ONE_MINUTE;
+  interval = MILLISECONDS_IN_MINUTES * minutes;
 
   // assigns the words list (if not already selected)
   words = words || store.get('words');
