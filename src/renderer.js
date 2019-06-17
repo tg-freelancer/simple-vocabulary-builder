@@ -145,9 +145,8 @@ $toggleBtn.on('click', (evt) => {
   const initialNotificationOptions = {
     icon: path.join(__dirname, '../assets/cat_meditating.jpg'),
     sound: false,
-    closeLabel: 'Okay',
     title: 'Simple Vocabulary Builder',
-    message: `The revision will start in ${minutes} minutes!`
+    message: `The revision will start in ${minutes} ${minutes === 1 ? 'minute' : 'minutes'}!`
   };
 
   notifier.notify(initialNotificationOptions);
