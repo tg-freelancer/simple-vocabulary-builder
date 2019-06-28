@@ -22,6 +22,12 @@ const $selectFileBtn = $form.find('.select-file-btn');
 const $toggleBtn = $form.find('.toggle-btn');
 const $intervalInput = $('#interval');
 const $loopCheckBox = $('.loop input[type="checkbox"]');
+const $shuffleCheckBox = $('.shuffle input[type="checkbox"]');
+
+// remove the shuffle checkbox for windows and linux
+if (os.platform() !== 'darwin') {
+  $('.shuffle').remove();
+}
 
 // getWordsListData
 let targetLang;
@@ -35,14 +41,16 @@ $('.current_words_list').text(store.get('name'));
 
 $('.container').on('click', (evt) => {
   const $e = $(evt.target);
+
   if ($e.is('a')) {
     const url = $e.attr('href');
-
     if (url !== '#') {
+      // follows an external link
       evt.preventDefault();
-      console.log(evt.currentTarget);
+      // console.log(evt.currentTarget);
       shell.openExternal(url); 
     } else {
+      // follows an internal link
       const pageName = $e.attr('data-link-destination');
       $(`aside a.${pageName}`).trigger('click');
     }
@@ -161,7 +169,7 @@ $toggleBtn.on('click', (evt) => {
   words = words || store.get('words');
 
   // sorts the list if macos, shuffles it otherwise.
-  if (os.platform() === 'darwin') {
+  if (os.platform() === 'darwin' && !$shuffleCheckBox.prop('checked')) {
     words = dictHelpers.getOrderedWords(words);
   } else {
     words = miscHelpers.shuffle(words);

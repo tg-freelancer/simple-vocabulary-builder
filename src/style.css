@@ -141,7 +141,7 @@ button {
   cursor: pointer;
 }
 
-.loop input[type="checkbox"] {
+input[type="checkbox"] {
   transform: scale(1.3);
 }
 
