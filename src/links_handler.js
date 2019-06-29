@@ -1,7 +1,7 @@
 const $ = require('jquery');
 const Handlebars = require('handlebars');
 const preprocess = require('./preprocess');
-
+const os = require('os');
 const Store = require('electron-store');
 const store = new Store();
 
@@ -15,10 +15,12 @@ $('aside a').on('click', (evt) => {
   if (linkType === 'index') {
     newContents = store.get('indexHtml');
     $('.contents').replaceWith(newContents);
-    // run the renderer script
-    // TODO
   } else {
     if (linkType === 'stats') {
+      if (os.platform() !== 'darwin') {
+        $('.score_info').remove();
+      }
+
       const statsTmplScript = Handlebars.compile(newContents);
       const words = store.get('words');
       newContents = statsTmplScript({ words: words }); 

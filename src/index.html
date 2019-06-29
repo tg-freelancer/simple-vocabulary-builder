@@ -128,14 +128,14 @@
         <thead>
           <tr>
             <th>Word / Phrases</th>
-            <th>Score</th>
+            <th class="score_info">Score</th>
           </tr>
         </thead>
         <tbody>
           {{#each words}}
           <tr>
             <td><a href='https://www.google.com/search?q={{this.word}}'>{{this.word}}</a></td>
-            <td>{{this.score}}</td>
+            <td class="score_info">{{this.score}}</td>
           </tr>
           {{/each}}
         </tbody>
