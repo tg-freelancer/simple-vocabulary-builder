@@ -5,6 +5,8 @@ const os = require('os');
 const Store = require('electron-store');
 const store = new Store();
 
+$('.index').closest('li').addClass('active');
+
 $('aside a').on('click', (evt) => {
   evt.preventDefault();
   const $link = $(evt.target);
