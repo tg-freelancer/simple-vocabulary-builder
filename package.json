@@ -1,13 +1,14 @@
 {
-  "name": "vocabulary_builder",
-  "productName": "Simple-Vocabulary-Builder",
+  "name": "simple-vocabulary-builder",
+  "productName": "Simple Vocabulary Builder",
   "version": "1.0.0",
-  "description": "Simple Vocabulary Builder",
+  "description": "A desktop vocabulary builder app",
   "main": "src/main.js",
   "scripts": {
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/demo.icns --prune=true --out=release-builds",
+    "package-mac": "electron-packager . simple-vocabulary-builder --overwrite --platform=darwin --arch=x64 --icon=assets/demo.icns --prune=true --out=release-builds",
     "package-win": "electron-packager . simple-vocabulary-builder --overwrite --platform=win32 --arch=x64 --icon=assets/demo.ico --prune=true --out=release-builds",
-    "package-linux": "electron-packager . simple-vocabulary-builder --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/demo.png --prune=true --out=release-builds",
+    "package-linux": "electron-packager . simple-vocabulary-builder --overwrite --platform=linux --arch=x64 --icon=assets/demo.png --prune=true --out=release-builds",
+    "installer-mac": "electron-installer-dmg ./release-builds/simple-vocabulary-builder-darwin-x64/simple-vocabulary-builder.app simple-vocabulary-builder --out=installers/mac --overwrite --icon=assets/demo.icns",
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -150,8 +150,9 @@ $toggleBtn.on('click', (evt) => {
 
   // let the user know the review process has started
   const minutes = Number($intervalInput.val());
+  const notificationIconPath = path.join(__dirname, '..', 'assets', 'cat_meditating.jpg');
   const initialNotificationOptions = {
-    icon: path.join(__dirname, '../assets/cat_meditating.jpg'),
+    icon: notificationIconPath,
     sound: false,
     title: 'Simple Vocabulary Builder',
     message: `The revision will start in ${minutes} ${minutes === 1 ? 'minute' : 'minutes'}!`
@@ -217,7 +218,7 @@ $toggleBtn.on('click', (evt) => {
         notificationOptions = {
           title: currentWord,
           message: definition || DEFINITION_NOT_FOUND_MSG,
-          icon: path.join(__dirname, '../assets/cat_meditating.jpg'),
+          icon: notificationIconPath,
           sound: false,
           // wait: true,
           timeout: interval,
