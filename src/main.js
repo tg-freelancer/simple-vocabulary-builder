@@ -84,7 +84,7 @@ function createWindow() {
       submenu: [{
         label: 'About',
         click() {
-          shell.openExternal('https://transborder.global/');
+          shell.openExternal('https://github.com/tg-freelancer/simple-vocabulary-builder');
         }
       }, {
         type: 'separator'
@@ -158,7 +158,7 @@ function createWindow() {
   // mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  //// open the dev tool
+  // open the dev tool
   // mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
