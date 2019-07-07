@@ -14,7 +14,7 @@ function getInstallerConfig () {
   const assetsPath = path.join('..', '..', 'assets');
 
   return Promise.resolve({
-    appDirectory: path.join(releaseBuildsPath, 'simple-vocabulary-builder-win32-x64'),
+    appDirectory: path.join(releaseBuildsPath, 'simple-vocabulary-builder-win32-ia32'),
     authors: 'tg',
     noMsi: true,
     outputDirectory: installerPath,
