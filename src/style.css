@@ -2,7 +2,7 @@ html {
   padding: 20px;
   font: normal 16px Helvetica, Arial, sans-serif;
   /*color: #1E0057;*/
-  /*background: rgb(254,253,255);*/
+  background: rgb(254,253,255);
   background: linear-gradient(90deg, rgba(254,253,255,0.5) 0%, rgba(244,246,255,1) 100%);
 }
 
@@ -91,9 +91,13 @@ nav li {
 }
 
 nav li:hover {
-  color: #fff;
-  background: #6261FF;
+  /*color: #fff;*/
+  /*background: #6261FF;*/
   /*background: rgba(244,246,255,1);*/
+  color: #8400FF;
+  /*color: #6261FF;*/
+  background: #E6DEFF;
+  cursor: pointer;
 }
 
 /*--- main ---*/
@@ -116,7 +120,11 @@ dd {
 
 button {
   border-radius: 3.5px;
+  margin-right: 7px;
   cursor: pointer;
+  transition: all .1s ease-in;
+  background: #E6DEFF;
+  color: #8400FF;
 }
 
 .current_words_list {
@@ -134,16 +142,9 @@ button {
   padding: 2px 5px;
 }
 
-button {
-  margin-right: 7px;
-  transition: all .1s ease-in;
-  background: #E6DEFF;
-  color: #8400FF; 
-}
-
 button:hover {
   color: #E6DEFF;
-  background: #8400FF; 
+  background: #8400FF;
 }
 
 .error {
