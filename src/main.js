@@ -74,6 +74,7 @@ function handleSquirrelEvent() {
 };
 
 let mainWindow;
+const iconPath = path.join(__dirname, '..', 'assets', 'demo.png');
 
 function createWindow() {
   const menuTemplate = [
@@ -146,7 +147,9 @@ function createWindow() {
     minWidth: 500,
     maxWidth: 700,
     height: 570,
-    icon: path.join(__dirname, '..', 'assets', 'demo.png'),
+    // titleBarStyle: 'customButtonsOnHover',
+    titleBarStyle: 'hiddenInset',
+    icon: iconPath,
     webPreferences: {
       nodeIntegration: true
     },
@@ -170,6 +173,7 @@ function createWindow() {
     const options = {
       type: 'warning',
       title: 'Warning',
+      icon: iconPath,
       message: 'When you select a new words list, the data for the previous words list (if any) will be deleted.\nAre you sure you want to continue?',
       buttons: ['Yes', 'No']
     };
