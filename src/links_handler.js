@@ -12,6 +12,12 @@ $('aside a').on('click', (evt) => {
   const newContext = { contents: $(`#${linkType}`).html() };
   let newContents = preprocess.tmplScript(newContext);
 
+  // remove the "active" class
+  // from the previously clicked li element
+  $('aside li').removeClass('active');
+  // add the "active" class to the clicked li element
+  $(evt.target).closest('li').addClass('active');
+
   if (linkType === 'index') {
     newContents = store.get('indexHtml');
     $('.contents').replaceWith(newContents);

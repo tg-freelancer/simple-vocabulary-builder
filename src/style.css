@@ -94,6 +94,16 @@ nav li:hover {
   /*color: #fff;*/
   /*background: #6261FF;*/
   /*background: rgba(244,246,255,1);*/
+  /*color: #8400FF;*/
+  /*color: #6261FF;*/
+  background: #E6DEFF;
+  cursor: pointer;
+}
+
+nav li.active {
+  /*color: #fff;*/
+  /*background: #6261FF;*/
+  /*background: rgba(244,246,255,1);*/
   color: #8400FF;
   /*color: #6261FF;*/
   background: #E6DEFF;
