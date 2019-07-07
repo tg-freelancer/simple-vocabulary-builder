@@ -1,6 +1,8 @@
 html {
   padding: 20px;
   font: normal 16px Helvetica, Arial, sans-serif;
+  background: rgb(254,253,255);
+  background: linear-gradient(90deg, rgba(254,253,255,1) 0%, rgba(244,246,255,1) 100%);
 }
 
 /*---/--- index.html ---/---*/
