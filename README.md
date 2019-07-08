@@ -1,1 +1,1 @@
-### Simple Vocabulary Builder
+### A deskptop vocabulary builder built with Electron
