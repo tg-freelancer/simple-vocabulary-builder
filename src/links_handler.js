@@ -35,5 +35,8 @@ $('aside a').on('click', (evt) => {
     }
     
     $('.contents').replaceWith(newContents);
+
+    // // create space for the title bar
+    // $('.contents').addClass('title-bar-space');
   }
 })
