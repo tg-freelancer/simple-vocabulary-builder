@@ -15,11 +15,12 @@ function getInstallerConfig () {
 
   return Promise.resolve({
     appDirectory: path.join(releaseBuildsPath, 'simple-vocabulary-builder-win32-ia32'),
+    // appDirectory: path.join(releaseBuildsPath, 'simple-vocabulary-builder-win32-x64'),
     authors: 'tg',
     noMsi: true,
     outputDirectory: installerPath,
     exe: 'simple-vocabulary-builder.exe',
-    setupExe: 'simple-vocabulary-builder.exe',
+    setupExe: 'SimpleVocabularyBuilder.exe',
     setupIcon: path.join(assetsPath, 'demo.ico'),
   })
 }
