@@ -5,3 +5,6 @@ const store = new Store();
 const tmpl = $('#template_container').html();
 store.set('indexHtml', $('main').html());
 module.exports.tmplScript = Handlebars.compile(tmpl);
+
+// delete the title bar for non-macOS platforms
+$('.title-bar').remove();
