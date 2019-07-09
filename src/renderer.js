@@ -1,5 +1,4 @@
 const $ = require('jquery');
-// const preprocess = require('./preprocess');
 const notifier = require('node-notifier');
 const {ipcRenderer, shell, remote} = require('electron');
 const fs = require('fs');
@@ -12,7 +11,8 @@ const Store = require('electron-store');
 const store = new Store();
 
 // useful constants
-const MILLISECONDS_IN_MINUTES = 60 * 1000;
+const SECONDS_IN_MINUTE = 60;
+const MILLISECONDS_IN_MINUTE = 1000 * SECONDS_IN_MINUTE;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 // const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
@@ -34,7 +34,8 @@ if (os.platform() !== 'darwin') {
 
 // getWordsListData
 let targetLang;
-let interval;
+let intervalInSeconds;
+let intervalInMilliseconds;
 let timer;
 let index;
 let words;
@@ -50,7 +51,6 @@ $('.container').on('click', (evt) => {
     if (url !== '#') {
       // follows an external link
       evt.preventDefault();
-      // console.log(evt.currentTarget);
       shell.openExternal(url); 
     } else {
       // follows an internal link
@@ -86,8 +86,10 @@ ipcRenderer.on('selected-file', (evt, path) => {
   // delete the error message if it exists
   $form.find('.file').text('');
 
+  // display the selected file name and set the selected attribute to true
   $('.selected-file').text(`Selected file: ${fileName}`);
   $('.selected-file').attr('data-file-selected', true);
+
   // read the selected file
   fs.readFile(pathStr, {
     encoding: 'utf8'
@@ -167,7 +169,9 @@ $toggleBtn.on('click', (evt) => {
   remote.BrowserWindow.getFocusedWindow().minimize();
 
   // sets the interval
-  interval = MILLISECONDS_IN_MINUTES * minutes;
+  intervalInSeconds = SECONDS_IN_MINUTE * minutes;
+  intervalInMilliseconds = MILLISECONDS_IN_MINUTE * minutes;
+  console.log(intervalInSeconds, intervalInMilliseconds);
 
   // assigns the words list (if not already selected)
   words = words || store.get('words');
@@ -224,11 +228,10 @@ $toggleBtn.on('click', (evt) => {
           icon: notificationIconPath,
           sound: false,
           // wait: true,
-          timeout: interval,
+          timeout: intervalInSeconds,
           closeLabel: 'Close',
           actions: [yesIcon, noIcon],
           dropdownLabel: 'Remember?',
-          // reply: false
         };
 
         if (!definition) {
@@ -241,16 +244,15 @@ $toggleBtn.on('click', (evt) => {
 
           const id = dictHelpers.getId(currentWord);
           const currentScore = store.get(`words.${id}.score`);
+
           // update database based on the user response
           if (metadata.activationValue === yesIcon) {
             store.set(`words.${id}.score`, currentScore + 1);
-            // console.log(store.get(`words.${id}.word`), 'yes!!!');
           } else if (metadata.activationValue === noIcon) {
             let updatedScore = currentScore - 1;
             if (updatedScore < 0) updatedScore = 0;
 
             store.set(`words.${id}.score`, updatedScore);
-            // console.log(store.get(`words.${id}.word`), 'no...');
           }
         });
       });
@@ -279,7 +281,7 @@ $toggleBtn.on('click', (evt) => {
         $toggleBtn.text('Start');
       }
     }
-  }, interval);
+  }, intervalInMilliseconds);
 })
 
 store.set('indexHtml', $('main').html());
