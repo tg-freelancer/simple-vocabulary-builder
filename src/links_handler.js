@@ -5,6 +5,7 @@ const os = require('os');
 const Store = require('electron-store');
 const store = new Store();
 
+// add the 'active' class to the list menu for the index page
 $('.index').closest('li').addClass('active');
 
 $('aside a').on('click', (evt) => {
