@@ -132,22 +132,11 @@ function createWindow() {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 
-  // // determine the icon extention
-  // let iconExt;
-  // if (os.platform() === 'win32') {
-  //   iconExt = 'ico';
-  // } else if (os.platform() === 'darwin') {
-  //   iconExt = 'icns';
-  // } else {
-  //   iconExt = 'png'
-  // }
-
   mainWindow = new BrowserWindow({
     width: 560,
     minWidth: 500,
     maxWidth: 700,
     height: 570,
-    // titleBarStyle: 'customButtonsOnHover',
     titleBarStyle: 'hiddenInset',
     icon: iconPath,
     webPreferences: {
@@ -164,10 +153,6 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null
   });
-
-  // ipcMain.on('compilation-complete', (evt) => {
-  //   BrowserWindow.fromWebContents(evt.sender.webContents).show();
-  // });
 
   ipcMain.on('open-file-dialog', (evt) => {
     const options = {
