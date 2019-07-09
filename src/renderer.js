@@ -24,10 +24,11 @@ const $intervalInput = $('#interval');
 const $loopCheckBox = $('.loop input[type="checkbox"]');
 const $shuffleCheckBox = $('.shuffle input[type="checkbox"]');
 
-// remove the shuffle checkbox and the spacing for the title bar
-// for windows and linux
+// remove the shuffle checkbox, the upper space for the title bar
+// and the title bar itself for windows and linux
 if (os.platform() !== 'darwin') {
   $('.shuffle').remove();
+  $('.title-bar').remove();
   $('aside, main').removeClass('title-bar-space');
 }
 
