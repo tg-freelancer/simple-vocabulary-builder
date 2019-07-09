@@ -3,6 +3,7 @@ if (require('electron-squirrel-startup')) return;
 const {app, BrowserWindow, ipcMain, dialog, Tray, Menu, shell} = require('electron');
 const path = require('path');
 const os = require('os');
+const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
 
 // this should be placed at top of main.js to handle setup events quickly
 if (handleSquirrelEvent()) {
@@ -84,7 +85,7 @@ function createWindow() {
       submenu: [{
         label: 'About',
         click() {
-          shell.openExternal('https://github.com/tg-freelancer/simple-vocabulary-builder');
+          shell.openExternal(GITHUB_REPO_URL);
         }
       }, {
         type: 'separator'

@@ -15,7 +15,6 @@ const SECONDS_IN_MINUTE = 60;
 const MILLISECONDS_IN_MINUTE = 1000 * SECONDS_IN_MINUTE;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
-// const GITHUB_REPO_URL = 'https://github.com/tg-freelancer/simple-vocabulary-builder';
 
 const $form = $('form');
 const $selectFileBtn = $form.find('.select-file-btn');
