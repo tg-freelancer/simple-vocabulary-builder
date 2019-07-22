@@ -55,6 +55,14 @@ $('.container').on('click', (evt) => {
       if ($e.closest('td').attr('class') === 'delete') {
         // deletes the word from the database and UI
         evt.preventDefault();
+
+        // remove from the UI
+        const $removedWordRow = $e.closest('tr').remove();
+
+        // remove from the database
+        const $removedWord = $removedWordRow.find('.word');
+        const removedWordId = $removedWord.attr('data-word-id');
+        console.log(store.delete(`words.${removedWordId}`));
       } else {
         // follows an internal link
         const pageName = $e.attr('data-link-destination');
