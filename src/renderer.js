@@ -50,11 +50,16 @@ $('.container').on('click', (evt) => {
     if (url !== '#') {
       // follows an external link
       evt.preventDefault();
-      shell.openExternal(url); 
+      shell.openExternal(url);
     } else {
-      // follows an internal link
-      const pageName = $e.attr('data-link-destination');
-      $(`aside a.${pageName}`).trigger('click');
+      if ($e.closest('td').attr('class') === 'delete') {
+        // deletes the word from the database and UI
+        evt.preventDefault();
+      } else {
+        // follows an internal link
+        const pageName = $e.attr('data-link-destination');
+        $(`aside a.${pageName}`).trigger('click');
+      }
     }
   }
 });
