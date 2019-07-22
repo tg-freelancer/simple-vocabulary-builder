@@ -2,6 +2,7 @@ const $ = require('jquery');
 const Handlebars = require('handlebars');
 const preprocess = require('./preprocess');
 const os = require('os');
+const dictHelpers = require('./dictionary');
 const Store = require('electron-store');
 const store = new Store();
 
@@ -33,10 +34,16 @@ $('aside a').on('click', (evt) => {
       const statsTmplScript = Handlebars.compile(newContents);
       const words = store.get('words');
       newContents = statsTmplScript({ words: words }); 
-    }
-    
-    $('.contents').replaceWith(newContents);
+      
+      $('.contents').replaceWith(newContents);
 
+      // displays the number of words
+      const wordCount = dictHelpers.getWordCount(store.get('words'));
+      $('.word_count').text(wordCount);
+    } else {
+      // linkType !== stats/index
+      $('.contents').replaceWith(newContents);
+    }
     // // create space for the title bar
     // $('.contents').addClass('title-bar-space');
   }

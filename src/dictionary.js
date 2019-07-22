@@ -4,6 +4,10 @@ const Store = require('electron-store');
 const store = new Store();
 
 module.exports = {
+  getWordCount(words) {
+    // removes the null values and gets the actual number of words in the db
+    return words.filter(item => !!item).length;
+  },
   getFirstDefinition(json) {
     if (!json) return null;
     const meanings = json.meaning || json[0].meaning;

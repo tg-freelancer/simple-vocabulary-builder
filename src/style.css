@@ -49,6 +49,11 @@ h3 {
   font-size: 18px;
 }
 
+h4 {
+  margin-bottom: 13px;
+  font-size: 14px;
+}
+
 main {
   padding: 0 20px;
   /*text-align: center;*/

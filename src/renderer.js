@@ -56,13 +56,17 @@ $('.container').on('click', (evt) => {
         // deletes the word from the database and UI
         evt.preventDefault();
 
-        // remove from the UI
+        // remove from the stats UI
         const $removedWordRow = $e.closest('tr').remove();
 
         // remove from the database
         const $removedWord = $removedWordRow.find('.word');
         const removedWordId = $removedWord.attr('data-word-id');
-        console.log(store.delete(`words.${removedWordId}`));
+        store.delete(`words.${removedWordId}`);
+
+        // update the word count in real time
+        const wordCount = dictHelpers.getWordCount(store.get('words'));
+        $('.word_count').text(wordCount);
       } else {
         // follows an internal link
         const pageName = $e.attr('data-link-destination');
@@ -296,4 +300,4 @@ $toggleBtn.on('click', (evt) => {
   }, intervalInMilliseconds);
 })
 
-store.set('indexHtml', $('main').html());
+// store.set('indexHtml', $('main').html());
