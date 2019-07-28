@@ -177,9 +177,16 @@ button {
 
 #interval,
 .select-file-btn,
-.toggle-btn {
+.toggle-btn,
+.add-word-btn {
   height: 25px;
   width: 90px;
+}
+
+.add-word-btn {
+  position: absolute;
+  left: 422px;
+  top: 50px;
 }
 
 #interval {
@@ -293,6 +300,48 @@ tbody td {
 
 tbody td:last-of-type {
   width: 10px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 92px;
+  left: 150px;
+  padding: 15px;
+  height: 140px;
+  width: 260px;
+  background: #f5f5fa;
+  z-index: 3;
+}
+
+.add-word-modal dd {
+  display: inline-block;
+}
+
+.add-word-modal form {
+  text-align: center;
+}
+
+.add-word-modal input {
+  margin-right: 6px;
+  width: 130px;
+  height: 21px;
+}
+
+.add-word-modal button {
+  margin: 0;
+  height: 23px;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(.3, .3, .3, .5);
+  z-index: 2;
 }
 
 /*--- contact ---*/

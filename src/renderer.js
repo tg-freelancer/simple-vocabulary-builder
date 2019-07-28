@@ -42,6 +42,7 @@ let words;
 // display the current list name
 $('.current_words_list').text(store.get('name'));
 
+// handle link clicks on non-index pages
 $('.container').on('click', (evt) => {
   const $e = $(evt.target);
 
@@ -53,6 +54,7 @@ $('.container').on('click', (evt) => {
       shell.openExternal(url);
     } else {
       if ($e.closest('td').attr('class') === 'delete') {
+        //// handle word deletions
         // deletes the word from the database and UI
         evt.preventDefault();
 
@@ -73,7 +75,11 @@ $('.container').on('click', (evt) => {
         $(`aside a.${pageName}`).trigger('click');
       }
     }
-  }
+  } else if ($e.attr('class') === 'add-word-btn') {
+    evt.preventDefault();
+    $('.overlay').show();
+    $('.modal').show();
+  };
 });
 
 // open the select file dialog window
