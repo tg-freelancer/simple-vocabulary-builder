@@ -75,10 +75,20 @@ $('.container').on('click', (evt) => {
         $(`aside a.${pageName}`).trigger('click');
       }
     }
-  } else if ($e.attr('class') === 'add-word-btn') {
+  }
+  // the clicked element is not an anchor element
+  else if ($e.attr('class') === 'add-word-btn') {
+    // handle a word addition button click
     evt.preventDefault();
     $('.overlay').show();
     $('.modal').show();
+  } else if ($e.attr('class') === 'overlay') {
+    // handle overlay actions
+    $('.overlay').hide();
+    $('.modal').hide();
+  } else if ($e.attr('class') === 'add-word-btn-modal') {
+    evt.preventDefault();
+    // TODO
   };
 });
 
