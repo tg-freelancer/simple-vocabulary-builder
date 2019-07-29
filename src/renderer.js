@@ -104,12 +104,11 @@ $('.container').on('click', (evt) => {
       $('.word_count').text(wordCount);
     } else if (className === 'overlay') {
       // handle overlay actions
-      $('.overlay').hide();
-      $('.modal').hide();
+      $('.overlay').remove();
+      $('.modal').remove();
     } else if (className === 'add-word-btn-modal') {
       evt.preventDefault();
-      console.log('add word btn clicked!');
-      // TODO
+      const newWord = $('input').filter('[name=new_word]');
     };
   }
 });
