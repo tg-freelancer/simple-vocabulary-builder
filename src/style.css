@@ -315,6 +315,7 @@ svg.delete {
   padding: 15px;
   height: 140px;
   width: 260px;
+  border-radius: 3px;
   background: #f5f5fa;
   z-index: 3;
 }
@@ -329,8 +330,10 @@ svg.delete {
 
 .add-word-modal input {
   margin-right: 6px;
+  padding-left: 5px;
   width: 130px;
   height: 21px;
+  font-size: 14px;
 }
 
 .add-word-modal button {
