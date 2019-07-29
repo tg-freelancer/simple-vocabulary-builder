@@ -45,51 +45,73 @@ $('.current_words_list').text(store.get('name'));
 // handle link clicks on non-index pages
 $('.container').on('click', (evt) => {
   const $e = $(evt.target);
-
   if ($e.is('a')) {
+    //// anchor element is clicked
     const url = $e.attr('href');
     if (url !== '#') {
       // follows an external link
       evt.preventDefault();
       shell.openExternal(url);
     } else {
-      if ($e.closest('td').attr('class') === 'delete') {
-        //// handle word deletions
-        // deletes the word from the database and UI
-        evt.preventDefault();
+      // follows an internal link
+      const pageName = $e.attr('data-link-destination');
+      $(`aside a.${pageName}`).trigger('click');
 
-        // remove from the stats UI
-        const $removedWordRow = $e.closest('tr').remove();
+      // if ($e.closest('td').attr('class') === 'delete') {
+        // //// handle word deletions
+        // // deletes the word from the database and UI
+        // evt.preventDefault();
 
-        // remove from the database
-        const $removedWord = $removedWordRow.find('.word');
-        const removedWordId = $removedWord.attr('data-word-id');
-        store.delete(`words.${removedWordId}`);
+        // // remove from the stats UI
+        // const $removedWordRow = $e.closest('tr').remove();
 
-        // update the word count in real time
-        const wordCount = dictHelpers.getWordCount(store.get('words'));
-        $('.word_count').text(wordCount);
-      } else {
-        // follows an internal link
-        const pageName = $e.attr('data-link-destination');
-        $(`aside a.${pageName}`).trigger('click');
-      }
+        // // remove from the database
+        // const $removedWord = $removedWordRow.find('.word');
+        // const removedWordId = $removedWord.attr('data-word-id');
+        // store.delete(`words.${removedWordId}`);
+
+        // // update the word count in real time
+        // const wordCount = dictHelpers.getWordCount(store.get('words'));
+        // $('.word_count').text(wordCount);
+      // } else {
+      // }
     }
+  } else {
+    //// clicked element is not an anchor element
+    const className = $e.attr('class');
+
+    // the clicked element is not an anchor element
+    if (className === 'add-word-btn') {
+      // handle a word addition button click
+      evt.preventDefault();
+      $('.overlay').show();
+      $('.modal').show();
+    } else if (className === 'delete') {
+      //// handle word deletions
+      // delete the word from the database and UI
+      evt.preventDefault();
+
+      // remove the word row from the stats UI
+      const $removedWordRow = $e.closest('tr').remove();
+
+      // remove from the database
+      const $removedWord = $removedWordRow.find('.word');
+      const removedWordId = $removedWord.attr('data-word-id');
+      store.delete(`words.${removedWordId}`);
+
+      // update the word count display in real time
+      const wordCount = dictHelpers.getWordCount(store.get('words'));
+      $('.word_count').text(wordCount);
+    } else if (className === 'overlay') {
+      // handle overlay actions
+      $('.overlay').hide();
+      $('.modal').hide();
+    } else if (className === 'add-word-btn-modal') {
+      evt.preventDefault();
+      console.log('add word btn clicked!');
+      // TODO
+    };
   }
-  // the clicked element is not an anchor element
-  else if ($e.attr('class') === 'add-word-btn') {
-    // handle a word addition button click
-    evt.preventDefault();
-    $('.overlay').show();
-    $('.modal').show();
-  } else if ($e.attr('class') === 'overlay') {
-    // handle overlay actions
-    $('.overlay').hide();
-    $('.modal').hide();
-  } else if ($e.attr('class') === 'add-word-btn-modal') {
-    evt.preventDefault();
-    // TODO
-  };
 });
 
 // open the select file dialog window

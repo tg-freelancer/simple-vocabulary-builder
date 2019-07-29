@@ -302,6 +302,11 @@ tbody td:last-of-type {
   width: 10px;
 }
 
+svg.delete {
+  height: 12px;
+  vertical-align: baseline;
+}
+
 .modal {
   display: none;
   position: fixed;
