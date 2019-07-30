@@ -202,6 +202,10 @@ button:hover {
   color: #FF2B8F;
 }
 
+.success {
+  color: #33E891;
+}
+
 .loop label, .shuffle label {
   cursor: pointer;
 }
@@ -318,6 +322,11 @@ svg.delete {
   border-radius: 3px;
   background: #f5f5fa;
   z-index: 3;
+}
+
+.modal .message {
+  display: block;
+  text-align: center;
 }
 
 .add-word-modal dd {

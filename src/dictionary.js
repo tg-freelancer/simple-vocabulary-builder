@@ -28,6 +28,9 @@ module.exports = {
     const errorType = $interval[0].validity;
     return !(errorType.valueMissing || errorType.patternMismatch);
   },
+  isValidWord(word) {
+    return !!word;
+  },
   isFileSelected($file) {
     // checks if a words list already exists in the database
     return store.has('words');
@@ -61,6 +64,9 @@ module.exports = {
     }
 
     return errorMessages;
+  },
+  getErrorMessageForNewWord(word) {
+    return 'New word cannot be empty.';
   },
   displayErrors(errorMessages, $form) {
     $form.find('.error').each(function() {

@@ -37,6 +37,7 @@ let intervalInSeconds;
 let intervalInMilliseconds;
 let timer;
 let index;
+let lastIndex;
 let words;
 
 // display the current list name
@@ -106,9 +107,28 @@ $('.container').on('click', (evt) => {
       // handle overlay actions
       $('.overlay').remove();
       $('.modal').remove();
+      $('aside a.stats').trigger('click');
     } else if (className === 'add-word-btn-modal') {
+      // handle adding new word (custom validation method used)
       evt.preventDefault();
-      const newWord = $('input').filter('[name=new_word]');
+      const $newWordInput = $('input').filter('[name=new_word]');
+      const newWord = $newWordInput.val();
+      const sanitizedNewWord = miscHelpers.getSanitizedWord(newWord);
+      if (dictHelpers.isValidWord(sanitizedNewWord)) {
+        // add the new word to the list (UI updated upon revisit)
+        lastIndex = store.get('words').length;
+        const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0 };
+        store.set(`words.${lastIndex}`, newWordObj);
+        console.log(store.get('words'));
+        // clear the error message and the new word entered
+        $('.modal span').text('');
+        $('.modal span').removeClass('error').addClass('success').text(`'${sanitizedNewWord}' has been added to the list!`);
+        $newWordInput.closest('form')[0].reset();
+      } else {
+        // display the error message
+        const errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
+        $('.modal span').removeClass('success').addClass('error').text(errorMessage);
+      }
     };
   }
 });
@@ -154,6 +174,7 @@ ipcRenderer.on('selected-file', (evt, path) => {
     store.set('name', fileName);
     store.set('words', wordsArr);
 
+    // assign the words list
     words = store.get('words');
 
     // update the current word list name

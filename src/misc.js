@@ -18,6 +18,9 @@ module.exports = {
 
     return shuffledItems;
   },
+  getSanitizedWord(word) {
+    return word.trim();
+  },
   getLastElement(arr) {
     return arr[arr.length - 1];
   }
