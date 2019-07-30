@@ -16,12 +16,12 @@ const MILLISECONDS_IN_MINUTE = 1000 * SECONDS_IN_MINUTE;
 const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
 const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 
-const $form = $('form');
+const $form = $('.container').find('form');
 const $selectFileBtn = $form.find('.select-file-btn');
 const $toggleBtn = $form.find('.toggle-btn');
-const $intervalInput = $('#interval');
-const $loopCheckBox = $('.loop input[type="checkbox"]');
-const $shuffleCheckBox = $('.shuffle input[type="checkbox"]');
+const $intervalInput = $form.find('#interval');
+const $loopCheckBox = $form.find('.loop input[type="checkbox"]');
+const $shuffleCheckBox = $form.find('.shuffle input[type="checkbox"]');
 
 // remove the shuffle checkbox, the upper space for the title bar
 // and the title bar itself for windows and linux
