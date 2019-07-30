@@ -18,11 +18,26 @@ module.exports = {
       return word1.score - word2.score;
     });
   },
+  getUpdatedWordsList(words, removedWordId) {
+    return words.filter((wordData) => {
+      return wordData.id !== removedWordId;
+    });
+  },
+  getNonNullWords(words) {
+    return words.filter((wordData) => wordData);
+  },
   // returns the words list data
   getWordsListData(arr) {
     return arr.map((item, id) => {
       return { id: id, word: item, score: 0 };
     });
+  },
+  getLastIndex(words) {
+    return Math.max(...words.map((wordData) => wordData.id));
+    // for (let i = currentIndex + 1; i < words.length; i += 1) {
+    //   let currentWord = words[i];
+    //   if (currentWord) return i;
+    // }
   },
   isValidInterval($interval) {
     const errorType = $interval[0].validity;

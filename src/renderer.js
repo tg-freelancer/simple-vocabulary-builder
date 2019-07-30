@@ -37,6 +37,7 @@ let intervalInSeconds;
 let intervalInMilliseconds;
 let timer;
 let index;
+let nextIndex;
 let lastIndex;
 let words;
 
@@ -97,8 +98,17 @@ $('.container').on('click', (evt) => {
 
       // remove from the database
       const $removedWord = $removedWordRow.find('.word');
-      const removedWordId = $removedWord.attr('data-word-id');
-      store.delete(`words.${removedWordId}`);
+      const removedWordId = Number($removedWord.attr('data-word-id'));
+
+      // fetch the last index
+      lastIndex = dictHelpers.getLastIndex(store.get('words'));
+
+      // get updated list
+      const updatedWordsList = dictHelpers.getUpdatedWordsList(store.get('words'), removedWordId);
+
+      // update db
+      store.set('words', updatedWordsList);
+      console.log(store.get('words'));
 
       // update the word count display in real time
       const wordCount = dictHelpers.getWordCount(store.get('words'));
@@ -115,10 +125,13 @@ $('.container').on('click', (evt) => {
       const newWord = $newWordInput.val();
       const sanitizedNewWord = miscHelpers.getSanitizedWord(newWord);
       if (dictHelpers.isValidWord(sanitizedNewWord)) {
-        // add the new word to the list (UI updated upon revisit)
-        lastIndex = store.get('words').length;
+        // add the new word to the list (UI updated upon the overlay being clicked)
+        // nextIndex = dictHelpers.getNextIndex(store.get('words'));
+        lastIndex += 1;
         const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0 };
-        store.set(`words.${lastIndex}`, newWordObj);
+        console.log('added: ', newWordObj);
+        const newListSize = dictHelpers.getWordCount(store.get('words'))
+        store.set(`words.${newListSize}`, newWordObj);
         console.log(store.get('words'));
         // clear the error message and the new word entered
         $('.modal span').text('');
@@ -245,10 +258,12 @@ $toggleBtn.on('click', (evt) => {
   // sets the interval
   intervalInSeconds = SECONDS_IN_MINUTE * minutes;
   intervalInMilliseconds = MILLISECONDS_IN_MINUTE * minutes;
-  console.log(intervalInSeconds, intervalInMilliseconds);
+  // console.log(intervalInSeconds, intervalInMilliseconds);
 
   // assigns the words list (if not already selected)
   words = words || store.get('words');
+  // assigns the clean words list (no null values)
+  // words = dictHelpers.getCleanWordsList(words || store.get('words'));
 
   // sorts the list if macos, shuffles it otherwise.
   if (os.platform() === 'darwin' && !$shuffleCheckBox.prop('checked')) {
@@ -314,7 +329,7 @@ $toggleBtn.on('click', (evt) => {
 
         notifier.notify(notificationOptions, function(error, response, metadata) {
           // !!! must reference the "id" for each word to be updated
-          console.log('NOTIFIED!!!');
+          // console.log('NOTIFIED!!!');
 
           const id = dictHelpers.getId(currentWord);
           const currentScore = store.get(`words.${id}.score`);
@@ -342,9 +357,9 @@ $toggleBtn.on('click', (evt) => {
 
     req.end();
 
+    // get the next index
+    // index = dictHelpers.getNextIndex(words);
     index += 1;
-
-    console.log('Index updated.');
 
     // execute loop
     if (index > words.length - 1) {
