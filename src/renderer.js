@@ -121,14 +121,22 @@ $('.container').on('click', (evt) => {
     } else if (className === 'add-word-modal-btn') {
       // handle adding new word (custom validation method used)
       evt.preventDefault();
+
+      // get new word
       const $newWordInput = $('input').filter('[name=new_word]');
       const newWord = $newWordInput.val();
       const sanitizedNewWord = miscHelpers.getSanitizedWord(newWord);
+
+      // get custom definition
+      const newWordDefinition = $('#new_word_definition').val();
       if (dictHelpers.isValidWord(sanitizedNewWord)) {
         // add the new word to the list (UI updated upon the overlay being clicked)
         // nextIndex = dictHelpers.getNextIndex(store.get('words'));
-        lastIndex += 1;
-        const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0 };
+
+        // fetch the last index
+        lastIndex = dictHelpers.getLastIndex(store.get('words')) + 1;
+        // lastIndex += 1;
+        const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0, definition: newWordDefinition };
         console.log('added: ', newWordObj);
         const newListSize = dictHelpers.getWordCount(store.get('words'))
         store.set(`words.${newListSize}`, newWordObj);
@@ -288,7 +296,7 @@ $toggleBtn.on('click', (evt) => {
     let currentIndex = index;
     currentWord = words[currentIndex].word;
 
-    let definition;
+    let definition = words[currentIndex].definition;
     let apiPath = encodeURI(`/?define=${currentWord}&lang=${targetLang}`);
 
     // set 'Content-Type' to 'text/plain', rather than 'application/json'
@@ -309,7 +317,7 @@ $toggleBtn.on('click', (evt) => {
         // check if data is of type html
         // (no error code specified in the original api)
         const json = data[0] === '<' ? null : JSON.parse(data);
-        definition = dictHelpers.getFirstDefinition(json);
+        definition = definition || dictHelpers.getFirstDefinition(json);
 
         notificationOptions = {
           title: currentWord,
