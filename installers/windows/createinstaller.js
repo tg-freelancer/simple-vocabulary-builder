@@ -20,7 +20,7 @@ function getInstallerConfig () {
     noMsi: true,
     outputDirectory: installerPath,
     exe: 'simple-vocabulary-builder.exe',
-    setupExe: 'SimpleVocabularyBuilder.exe',
+    setupExe: 'simple-vocabulary-builder.exe',
     setupIcon: path.join(assetsPath, 'demo.ico'),
   })
 }
