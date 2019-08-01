@@ -118,7 +118,7 @@ $('.container').on('click', (evt) => {
       $('.overlay').remove();
       $('.modal').remove();
       $('aside a.stats').trigger('click');
-    } else if (className === 'add-word-btn-modal') {
+    } else if (className === 'add-word-modal-btn') {
       // handle adding new word (custom validation method used)
       evt.preventDefault();
       const $newWordInput = $('input').filter('[name=new_word]');
@@ -134,8 +134,8 @@ $('.container').on('click', (evt) => {
         store.set(`words.${newListSize}`, newWordObj);
         console.log(store.get('words'));
         // clear the error message and the new word entered
-        $('.modal span').text('');
-        $('.modal span').removeClass('error').addClass('success').text(`'${sanitizedNewWord}' has been added to the list!`);
+        $('.modal .error').text('');
+        $('.modal .error').removeClass('error').addClass('success').text(`'${sanitizedNewWord}' has been added to the list!`);
         $newWordInput.closest('form')[0].reset();
       } else {
         // display the error message
