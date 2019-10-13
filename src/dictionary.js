@@ -39,6 +39,9 @@ module.exports = {
     //   if (currentWord) return i;
     // }
   },
+  getWordFromId(id) {
+    return store.get('words').filter(item => item.id === id)[0];
+  },
   getIndex(list, word) {
     return list.filter(item => item.word === word)[0].id;
   },

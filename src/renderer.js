@@ -118,7 +118,7 @@ $('.container').on('click', (evt) => {
 
       // pre-populate the input fields
       const id = Number($e.closest('tr').attr('data-word-id'));
-      const wordObj = store.get('words').filter(item => item.id === id)[0];
+      const wordObj = dictHelpers.getWordFromId(id);
       const {word, definition} = wordObj;
       $('.edit-word-modal').find('[name=edited_word]').val(word);
       $('.edit-word-modal').find('[name=edited_word_definition]').val(definition);
