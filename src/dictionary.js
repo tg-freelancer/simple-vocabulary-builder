@@ -39,6 +39,9 @@ module.exports = {
     //   if (currentWord) return i;
     // }
   },
+  getIndex(list, word) {
+    return list.filter(item => item.word === word)[0].id;
+  },
   isValidInterval($interval) {
     const errorType = $interval[0].validity;
     return !(errorType.valueMissing || errorType.patternMismatch);

@@ -334,25 +334,22 @@ svg.delete {
   text-align: center;
 }
 
-.add-word-modal dd {
+.modal dd {
   /*display: inline-block;*/
 }
 
-.add-word-modal dt {
+.modal dt {
   padding-left: 39px;
   text-align: left;
 }
 
-.add-word-modal form {
+.modal form {
   padding: 0;
-}
-
-.add-word-modal form {
   text-align: center;
 }
 
-.add-word-modal input,
-.add-word-modal textarea {
+.modal input,
+.modal textarea {
   margin-right: 6px;
   padding-left: 5px;
   width: 167px;
@@ -360,19 +357,19 @@ svg.delete {
   font-size: 14px;
 }
 
-.add-word-modal input {
+.modal input {
   /*margin-right: 6px;*/
   /*padding-left: 5px;*/
   height: 21px;
 }
 
-.add-word-modal textarea {
+.modal textarea {
   /*width: 167px;*/
   height: 78px;
   resize: none;
 }
 
-.add-word-modal .error {
+.modal .error {
   display: inline-block;
   margin-bottom: 10px;
 }

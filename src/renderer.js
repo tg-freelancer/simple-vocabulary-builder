@@ -80,25 +80,24 @@ $('.container').on('click', (evt) => {
     }
   } else {
     //// clicked element is not an anchor element
+    evt.preventDefault();
     const className = $e.attr('class');
 
-    // the clicked element is not an anchor element
     if (className === 'add-word-btn') {
-      // handle a word addition button click
-      evt.preventDefault();
+      // handle word addition
+
       $('.overlay').show();
-      $('.modal').show();
+      $('.add-word-modal').show();
     } else if (className === 'delete') {
       //// handle word deletions
       // delete the word from the database and UI
-      evt.preventDefault();
 
       // remove the word row from the stats UI
       const $removedWordRow = $e.closest('tr').remove();
 
       // remove from the database
-      const $removedWord = $removedWordRow.find('.word');
-      const removedWordId = Number($removedWord.attr('data-word-id'));
+      // const $removedWord = $removedWordRow.find('.word');
+      const removedWordId = Number($removedWordRow.attr('data-word-id'));
 
       // fetch the last index
       lastIndex = dictHelpers.getLastIndex(store.get('words'));
@@ -108,11 +107,52 @@ $('.container').on('click', (evt) => {
 
       // update db
       store.set('words', updatedWordsList);
-      console.log(store.get('words'));
 
       // update the word count display in real time
       const wordCount = dictHelpers.getWordCount(store.get('words'));
       $('.word_count').text(wordCount);
+    } else if (className === 'edit') {
+      // handle word edit
+      $('.overlay').show();
+      $('.edit-word-modal').show();
+
+      // pre-populate the input fields
+      const id = Number($e.closest('tr').attr('data-word-id'));
+      const wordObj = store.get('words').filter(item => item.id === id)[0];
+      const {word, definition} = wordObj;
+      $('.edit-word-modal').find('[name=edited_word]').val(word);
+      $('.edit-word-modal').find('[name=edited_word_definition]').val(definition);
+    } else if (className === 'edit-word-modal-btn') {
+      // handle editing existing word (custom validation method used)
+
+      // get the index of the edited word
+      const id = $e.closest('tr').attr('data-word-id');
+
+      console.log(id);
+      // get new word
+      const $editedWordInput = $('input').filter('[name=edited_word]');
+      const editedWord = $editedWordInput.val();
+      const sanitizedEditedWord = miscHelpers.getSanitizedWord(editedWord);
+
+      // get custom definition
+      const editedWordDefinition = $('#edited_word_definition').val();
+
+      if (dictHelpers.isValidWord(sanitizedEditedWord)) {
+        // edit the current word within the db
+
+        const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0, definition: newWordDefinition };
+        const newListSize = dictHelpers.getWordCount(store.get('words'))
+        store.set(`words.${newListSize}`, newWordObj);
+        console.log(store.get('words'));
+        // clear the error message and the new word entered
+        $('.modal .error').text('');
+        $('.modal .error').removeClass('error').addClass('success').text(`'${sanitizedNewWord}' has been added to the list!`);
+        $newWordInput.closest('form')[0].reset();
+      } else {
+        // display the error message
+        const errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
+        $('.modal span').removeClass('success').addClass('error').text(errorMessage);
+      }
     } else if (className === 'overlay') {
       // handle overlay actions
       $('.overlay').remove();
@@ -120,7 +160,6 @@ $('.container').on('click', (evt) => {
       $('aside a.stats').trigger('click');
     } else if (className === 'add-word-modal-btn') {
       // handle adding new word (custom validation method used)
-      evt.preventDefault();
 
       // get new word
       const $newWordInput = $('input').filter('[name=new_word]');
@@ -137,7 +176,6 @@ $('.container').on('click', (evt) => {
         lastIndex = dictHelpers.getLastIndex(store.get('words')) + 1;
         // lastIndex += 1;
         const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0, definition: newWordDefinition };
-        console.log('added: ', newWordObj);
         const newListSize = dictHelpers.getWordCount(store.get('words'))
         store.set(`words.${newListSize}`, newWordObj);
         console.log(store.get('words'));
