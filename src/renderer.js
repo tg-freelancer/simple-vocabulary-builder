@@ -117,18 +117,21 @@ $('.container').on('click', (evt) => {
       $('.edit-word-modal').show();
 
       // pre-populate the input fields
+      const $modal = $('.edit-word-modal');
       const id = Number($e.closest('tr').attr('data-word-id'));
       const wordObj = dictHelpers.getWordFromId(id);
       const {word, definition} = wordObj;
-      $('.edit-word-modal').find('[name=edited_word]').val(word);
-      $('.edit-word-modal').find('[name=edited_word_definition]').val(definition);
+      $modal.find('[name=edited_word]').val(word);
+      $modal.find('[name=edited_word_definition]').val(definition);
+
+      // attach unique id to the input fields
+      $modal.attr('data-edited-word-id', id);
     } else if (className === 'edit-word-modal-btn') {
       // handle editing existing word (custom validation method used)
 
       // get the index of the edited word
-      const id = $e.closest('tr').attr('data-word-id');
+      const id = Number($e.closest('div').attr('data-edited-word-id'));
 
-      console.log(id);
       // get new word
       const $editedWordInput = $('input').filter('[name=edited_word]');
       const editedWord = $editedWordInput.val();
@@ -138,10 +141,8 @@ $('.container').on('click', (evt) => {
       const editedWordDefinition = $('#edited_word_definition').val();
 
       if (dictHelpers.isValidWord(sanitizedEditedWord)) {
-        // edit the current word within the db
+        // update the current word within the db
 
-        const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0, definition: newWordDefinition };
-        const newListSize = dictHelpers.getWordCount(store.get('words'))
         store.set(`words.${newListSize}`, newWordObj);
         console.log(store.get('words'));
         // clear the error message and the new word entered
