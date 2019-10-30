@@ -45,6 +45,16 @@ module.exports = {
   getIndex(list, word) {
     return list.filter(item => item.word === word)[0].id;
   },
+  getPosition(id) {
+    // get the index of edited word within the words array
+    const words = store.get('words');
+
+    for (let i = 0; i < words.length; i += 1) {
+      if (words[i].id === id) return i;
+    };
+
+    return -1;
+  },
   isValidInterval($interval) {
     const errorType = $interval[0].validity;
     return !(errorType.valueMissing || errorType.patternMismatch);
