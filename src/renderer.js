@@ -143,12 +143,16 @@ $('.container').on('click', (evt) => {
       if (dictHelpers.isValidWord(sanitizedEditedWord)) {
         // update the current word within the db
 
-        store.set(`words.${newListSize}`, newWordObj);
-        console.log(store.get('words'));
+        const position = dictHelpers.getPosition(id);
+
+        store.set(`words.${position}.word`, editedWord);
+        store.set(`words.${position}.definition`, editedWordDefinition);
+        // console.log(store.get(`words.${position}`));
+
         // clear the error message and the new word entered
         $('.modal .error').text('');
-        $('.modal .error').removeClass('error').addClass('success').text(`'${sanitizedNewWord}' has been added to the list!`);
-        $newWordInput.closest('form')[0].reset();
+        $('.modal .error').removeClass('error').addClass('success').text('The entry has been updated!');
+        $e.closest('form')[0].reset();
       } else {
         // display the error message
         const errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
@@ -189,7 +193,7 @@ $('.container').on('click', (evt) => {
         const errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
         $('.modal span').removeClass('success').addClass('error').text(errorMessage);
       }
-    };
+    }
   }
 });
 
