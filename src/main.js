@@ -75,7 +75,7 @@ function handleSquirrelEvent() {
 };
 
 let mainWindow;
-const iconPath = path.join(__dirname, '..', 'assets', 'demo.png');
+const iconPath = path.join(__dirname, '..', 'assets', 'svb_logo.png');
 
 function createWindow() {
   const menuTemplate = [
