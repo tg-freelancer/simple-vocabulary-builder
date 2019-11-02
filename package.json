@@ -10,9 +10,9 @@
     "package-win-x64": "electron-packager . simple-vocabulary-builder --overwrite --asar --platform=win32 --arch=x64 --icon=assets/logo.ico --prune=true --out=release-builds",
     "package-linux": "electron-packager . simple-vocabulary-builder --overwrite --asar --platform=linux --arch=x64 --icon=assets/logo.png --prune=true --out=release-builds",
     "packages": "electron-packager . simple-vocabulary-builder --overwrite --platform=darwin --arch=x64 --icon=assets/logo.icns --prune=true --out=release-builds && electron-packager . simple-vocabulary-builder --overwrite --asar --platform=win32 --arch=x64 --icon=assets/logo.ico --prune=true --out=release-builds && electron-packager . simple-vocabulary-builder --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/logo.ico --prune=true --out=release-builds && electron-packager . simple-vocabulary-builder --overwrite --asar --platform=linux --arch=x64 --icon=assets/logo.png --prune=true --out=release-builds",
-    "installer-mac": "electron-installer-dmg ./release-builds/simple-vocabulary-builder-darwin-x64/simple-vocabulary-builder.app simple-vocabulary-builder --out=installers/mac --overwrite=true --icon=assets/logo.icns",
+    "installer-mac": "electron-installer-dmg ./release-builds/simple-vocabulary-builder-darwin-x64/simple-vocabulary-builder.app simple-vocabulary-builder --out=installers/mac --overwrite=true --title='Simple Vocabulary Builder' --icon=assets/logo.icns",
     "installer-win": "cd installers/windows && node createinstaller.js",
-    "installers": "electron-installer-dmg ./release-builds/simple-vocabulary-builder-darwin-x64/simple-vocabulary-builder.app simple-vocabulary-builder --out=installers/mac --overwrite=true --icon=assets/logo.icns && cd installers/windows && node createinstaller.js",
+    "installers": "electron-installer-dmg ./release-builds/simple-vocabulary-builder-darwin-x64/simple-vocabulary-builder.app simple-vocabulary-builder --out=installers/mac --overwrite=true --title='Simple Vocabulary Builder' --icon=assets/logo.icns && cd installers/windows && node createinstaller.js",
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
