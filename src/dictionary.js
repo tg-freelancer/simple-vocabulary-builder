@@ -11,7 +11,11 @@ module.exports = {
   getFirstDefinition(json) {
     if (!json) return null;
     const meanings = json.meaning || json[0].meaning;
-    return meanings[Object.keys(meanings)[0]][0].definition;
+    const definitions = Object.values(meanings)[0].definitions;
+    const firstDefinition = definitions[0].definition;
+    // return meanings[Object.keys(meanings)[0]][0].definition;
+
+    return firstDefinition;
   },
   getOrderedWords(words) {
     return words.sort((word1, word2) => {
