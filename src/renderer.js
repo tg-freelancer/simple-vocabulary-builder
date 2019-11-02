@@ -293,7 +293,7 @@ $toggleBtn.on('click', (evt) => {
 
   // let the user know the review process has started
   const minutes = Number($intervalInput.val());
-  const notificationIconPath = path.join(__dirname, '..', 'assets', 'svb_logo.png');
+  const notificationIconPath = path.join(__dirname, '..', 'assets', 'logo.png');
   const initialNotificationOptions = {
     icon: notificationIconPath,
     sound: false,
