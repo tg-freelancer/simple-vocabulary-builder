@@ -47,6 +47,7 @@ $('.current_words_list').text(store.get('name'));
 // handle link clicks on non-index pages
 $('.container').on('click', (evt) => {
   const $e = $(evt.target);
+
   if ($e.is('a')) {
     //// anchor element is clicked
     const url = $e.attr('href');
@@ -80,17 +81,19 @@ $('.container').on('click', (evt) => {
     }
   } else {
     //// clicked element is not an anchor element
-    evt.preventDefault();
     const className = $e.attr('class');
 
     if (className === 'add-word-btn') {
       // handle word addition
+      evt.preventDefault();
 
       $('.overlay').show();
       $('.add-word-modal').show();
     } else if (className === 'delete') {
       //// handle word deletions
-      // delete the word from the database and UI
+      evt.preventDefault();
+
+      /// delete the word from the database and UI
 
       // remove the word row from the stats UI
       const $removedWordRow = $e.closest('tr').remove();
@@ -113,6 +116,8 @@ $('.container').on('click', (evt) => {
       $('.word_count').text(wordCount);
     } else if (className === 'edit') {
       // handle word edit
+      evt.preventDefault();
+
       $('.overlay').show();
       $('.edit-word-modal').show();
 
@@ -128,6 +133,7 @@ $('.container').on('click', (evt) => {
       $modal.attr('data-edited-word-id', id);
     } else if (className === 'edit-word-modal-btn') {
       // handle editing existing word (custom validation method used)
+      evt.preventDefault();
 
       // get the index of the edited word
       const id = Number($e.closest('div').attr('data-edited-word-id'));
@@ -165,6 +171,7 @@ $('.container').on('click', (evt) => {
       $('aside a.stats').trigger('click');
     } else if (className === 'add-word-modal-btn') {
       // handle adding new word (custom validation method used)
+      evt.preventDefault();
 
       // get new word
       const $newWordInput = $('input').filter('[name=new_word]');
