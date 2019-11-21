@@ -183,7 +183,8 @@ button {
 .select-file-btn,
 .toggle-btn,
 .add-word-btn,
-.add-word-modal-btn {
+.add-word-modal-btn,
+.edit-word-modal-btn {
   height: 25px;
   width: 90px;
 }
