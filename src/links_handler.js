@@ -9,18 +9,28 @@ const store = new Store();
 // add the 'active' class to the list menu for the index page
 $('.index').closest('li').addClass('active');
 
-$('aside a').on('click', (evt) => {
+$('aside li').on('click', (evt) => {
   evt.preventDefault();
-  const $link = $(evt.target);
+  // const $e = $(evt.target);
+  let $link = $(evt.target);
+
+  if ($link.is('li')) {
+    // the clicked element is not an anchor element (li element).
+    // Sets it to its child anchor element
+    $link = $(evt.target).find('a');
+  }
+
   const linkType = $link.attr('class');
+  console.log(linkType);
   const newContext = { contents: $(`#${linkType}`).html() };
   let newContents = preprocess.tmplScript(newContext);
 
   // remove the "active" class
   // from the previously clicked li element
   $('aside li').removeClass('active');
+
   // add the "active" class to the clicked li element
-  $(evt.target).closest('li').addClass('active');
+  $link.closest('li').addClass('active');
 
   if (linkType === 'index') {
     newContents = store.get('indexHtml');
