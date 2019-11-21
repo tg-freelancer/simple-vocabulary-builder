@@ -316,7 +316,6 @@ $toggleBtn.on('click', (evt) => {
   // sets the interval
   intervalInSeconds = SECONDS_IN_MINUTE * minutes;
   intervalInMilliseconds = MILLISECONDS_IN_MINUTE * minutes;
-  // console.log(intervalInSeconds, intervalInMilliseconds);
 
   // assigns the words list (if not already selected)
   words = words || store.get('words');
@@ -344,9 +343,9 @@ $toggleBtn.on('click', (evt) => {
 
   timer = setInterval(() => {
     let currentIndex = index;
-    currentWord = words[currentIndex].word;
-
-    let definition = words[currentIndex].definition;
+    let currentWordObj = words[currentIndex];
+    let currentWord = currentWordObj.word;
+    let definition = currentWordObj.definition;
     let apiPath = encodeURI(`/?define=${currentWord}&lang=${targetLang}`);
 
     // set 'Content-Type' to 'text/plain', rather than 'application/json'
@@ -391,16 +390,17 @@ $toggleBtn.on('click', (evt) => {
 
           const id = dictHelpers.getId(currentWord);
           const currentScore = store.get(`words.${id}.score`);
+          let updatedScore;
 
           // update database based on the user response
           if (metadata.activationValue === yesIcon) {
-            store.set(`words.${id}.score`, currentScore + 1);
+            updatedScore = currentScore + 1;
           } else if (metadata.activationValue === noIcon) {
-            let updatedScore = currentScore - 1;
+            updatedScore = currentScore - 1;
             if (updatedScore < 0) updatedScore = 0;
-
-            store.set(`words.${id}.score`, updatedScore);
           }
+
+          store.set(`words.${id}.score`, updatedScore);
         });
       });
 
@@ -431,4 +431,4 @@ $toggleBtn.on('click', (evt) => {
   }, intervalInMilliseconds);
 })
 
-// store.set('indexHtml', $('main').html());
+store.set('indexHtml', $('main').html());
