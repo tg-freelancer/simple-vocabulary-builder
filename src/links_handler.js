@@ -21,12 +21,16 @@ $('aside li').on('click', (evt) => {
   }
 
   const linkType = $link.attr('class');
-  console.log(linkType);
   const newContext = { contents: $(`#${linkType}`).html() };
   let newContents = preprocess.tmplScript(newContext);
 
-  // remove the "active" class
-  // from the previously clicked li element
+  // // identify the previous page and store its html if it was the index page
+  // const previousPageType = $('aside li').filter('.active').find('a').attr('class')
+  // if (previousPageType === 'index') {
+  //   store.set('indexHtml', $('main').html());
+  // }
+
+  // remove the "active" class from the previously clicked li element
   $('aside li').removeClass('active');
 
   // add the "active" class to the clicked li element
@@ -35,6 +39,11 @@ $('aside li').on('click', (evt) => {
   if (linkType === 'index') {
     newContents = store.get('indexHtml');
     $('.contents').replaceWith(newContents);
+    $.ajax({
+      url: './renderer.js',
+      dataType: "script",
+      success: () => console.log('loaded')
+    });
   } else {
     if (linkType === 'stats') {
       if (os.platform() !== 'darwin') {
@@ -57,4 +66,4 @@ $('aside li').on('click', (evt) => {
     // // create space for the title bar
     // $('.contents').addClass('title-bar-space');
   }
-})
+});
