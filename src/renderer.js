@@ -1,27 +1,27 @@
-const $ = require('jquery');
-const notifier = require('node-notifier');
-const {ipcRenderer, shell, remote} = require('electron');
-const fs = require('fs');
-const os = require('os');
-const http = require("https");
-const path = require('path');
-const dictHelpers = require('./dictionary');
-const miscHelpers = require('./misc');
-const Store = require('electron-store');
-const store = new Store();
+var $ = require('jquery');
+var notifier = require('node-notifier');
+var {ipcRenderer, shell, remote} = require('electron');
+var fs = require('fs');
+var os = require('os');
+var http = require("https");
+var path = require('path');
+var dictHelpers = require('./dictionary');
+var miscHelpers = require('./misc');
+var Store = require('electron-store');
+var store = new Store();
 
-// useful constants
-const SECONDS_IN_MINUTE = 60;
-const MILLISECONDS_IN_MINUTE = 1000 * SECONDS_IN_MINUTE;
-const DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
-const API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
+// useful varants
+var SECONDS_IN_MINUTE = 60;
+var MILLISECONDS_IN_MINUTE = 1000 * SECONDS_IN_MINUTE;
+var DEFINITION_NOT_FOUND_MSG = `Definition not found.\nClick this message to find out more.`;
+var API_HOST_URL = 'googledictionaryapi.eu-gb.mybluemix.net';
 
-const $form = $('.container').find('form');
-const $selectFileBtn = $form.find('.select-file-btn');
-const $toggleBtn = $form.find('.toggle-btn');
-const $intervalInput = $form.find('#interval');
-const $loopCheckBox = $form.find('.loop input[type="checkbox"]');
-const $shuffleCheckBox = $form.find('.shuffle input[type="checkbox"]');
+var $form = $('.container').find('form');
+var $selectFileBtn = $form.find('.select-file-btn');
+var $toggleBtn = $form.find('.toggle-btn');
+var $intervalInput = $form.find('#interval');
+var $loopCheckBox = $form.find('.loop input[type="checkbox"]');
+var $shuffleCheckBox = $form.find('.shuffle input[type="checkbox"]');
 
 // remove the shuffle checkbox, the upper space for the title bar
 // and the title bar itself for windows and linux
@@ -32,32 +32,35 @@ if (os.platform() !== 'darwin') {
 }
 
 // getWordsListData
-let targetLang;
-let intervalInSeconds;
-let intervalInMilliseconds;
-let timer;
-let index;
-let nextIndex;
-let lastIndex;
-let words;
+var targetLang;
+var intervalInSeconds;
+var intervalInMilliseconds;
+var timer;
+var index;
+var nextIndex;
+var lastIndex;
+var words;
 
 // display the current list name
 $('.current_words_list').text(store.get('name'));
 
 // handle link clicks on non-index pages
 $('.container').on('click', (evt) => {
-  const $e = $(evt.target);
+  var $e = $(evt.target);
+
+  // return if the clicked element is on the index page
+  if ($e.closest('div').hasClass('index')) return;
 
   if ($e.is('a')) {
     //// anchor element is clicked
-    const url = $e.attr('href');
+    var url = $e.attr('href');
     if (url !== '#') {
       // follows an external link
       evt.preventDefault();
       shell.openExternal(url);
     } else {
       // follows an internal link
-      const pageName = $e.attr('data-link-destination');
+      var pageName = $e.attr('data-link-destination');
       $(`aside a.${pageName}`).trigger('click');
 
       // if ($e.closest('td').attr('class') === 'delete') {
@@ -66,22 +69,22 @@ $('.container').on('click', (evt) => {
         // evt.preventDefault();
 
         // // remove from the stats UI
-        // const $removedWordRow = $e.closest('tr').remove();
+        // var $removedWordRow = $e.closest('tr').remove();
 
         // // remove from the database
-        // const $removedWord = $removedWordRow.find('.word');
-        // const removedWordId = $removedWord.attr('data-word-id');
+        // var $removedWord = $removedWordRow.find('.word');
+        // var removedWordId = $removedWord.attr('data-word-id');
         // store.delete(`words.${removedWordId}`);
 
         // // update the word count in real time
-        // const wordCount = dictHelpers.getWordCount(store.get('words'));
+        // var wordCount = dictHelpers.getWordCount(store.get('words'));
         // $('.word_count').text(wordCount);
       // } else {
       // }
     }
   } else {
     //// clicked element is not an anchor element
-    const className = $e.attr('class');
+    var className = $e.attr('class');
 
     if (className === 'add-word-btn') {
       // handle word addition
@@ -96,23 +99,23 @@ $('.container').on('click', (evt) => {
       /// delete the word from the database and UI
 
       // remove the word row from the stats UI
-      const $removedWordRow = $e.closest('tr').remove();
+      var $removedWordRow = $e.closest('tr').remove();
 
       // remove from the database
-      // const $removedWord = $removedWordRow.find('.word');
-      const removedWordId = Number($removedWordRow.attr('data-word-id'));
+      // var $removedWord = $removedWordRow.find('.word');
+      var removedWordId = Number($removedWordRow.attr('data-word-id'));
 
       // fetch the last index
       lastIndex = dictHelpers.getLastIndex(store.get('words'));
 
       // get updated list
-      const updatedWordsList = dictHelpers.getUpdatedWordsList(store.get('words'), removedWordId);
+      var updatedWordsList = dictHelpers.getUpdatedWordsList(store.get('words'), removedWordId);
 
       // update db
       store.set('words', updatedWordsList);
 
       // update the word count display in real time
-      const wordCount = dictHelpers.getWordCount(store.get('words'));
+      var wordCount = dictHelpers.getWordCount(store.get('words'));
       $('.word_count').text(wordCount);
     } else if (className === 'edit') {
       // handle word edit
@@ -122,10 +125,10 @@ $('.container').on('click', (evt) => {
       $('.edit-word-modal').show();
 
       // pre-populate the input fields
-      const $modal = $('.edit-word-modal');
-      const id = Number($e.closest('tr').attr('data-word-id'));
-      const wordObj = dictHelpers.getWordFromId(id);
-      const {word, definition} = wordObj;
+      var $modal = $('.edit-word-modal');
+      var id = Number($e.closest('tr').attr('data-word-id'));
+      var wordObj = dictHelpers.getWordFromId(id);
+      var {word, definition} = wordObj;
       $modal.find('[name=edited_word]').val(word);
       $modal.find('[name=edited_word_definition]').val(definition);
 
@@ -136,20 +139,20 @@ $('.container').on('click', (evt) => {
       evt.preventDefault();
 
       // get the index of the edited word
-      const id = Number($e.closest('div').attr('data-edited-word-id'));
+      var id = Number($e.closest('div').attr('data-edited-word-id'));
 
       // get new word
-      const $editedWordInput = $('input').filter('[name=edited_word]');
-      const editedWord = $editedWordInput.val();
-      const sanitizedEditedWord = miscHelpers.getSanitizedWord(editedWord);
+      var $editedWordInput = $('input').filter('[name=edited_word]');
+      var editedWord = $editedWordInput.val();
+      var sanitizedEditedWord = miscHelpers.getSanitizedWord(editedWord);
 
       // get custom definition
-      const editedWordDefinition = $('#edited_word_definition').val();
+      var editedWordDefinition = $('#edited_word_definition').val();
 
       if (dictHelpers.isValidWord(sanitizedEditedWord)) {
         // update the current word within the db
 
-        const position = dictHelpers.getPosition(id);
+        var position = dictHelpers.getPosition(id);
 
         store.set(`words.${position}.word`, editedWord);
         store.set(`words.${position}.definition`, editedWordDefinition);
@@ -161,7 +164,7 @@ $('.container').on('click', (evt) => {
         $e.closest('form')[0].reset();
       } else {
         // display the error message
-        const errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
+        var errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
         $('.modal span').removeClass('success').addClass('error').text(errorMessage);
       }
     } else if (className === 'overlay') {
@@ -174,12 +177,12 @@ $('.container').on('click', (evt) => {
       evt.preventDefault();
 
       // get new word
-      const $newWordInput = $('input').filter('[name=new_word]');
-      const newWord = $newWordInput.val();
-      const sanitizedNewWord = miscHelpers.getSanitizedWord(newWord);
+      var $newWordInput = $('input').filter('[name=new_word]');
+      var newWord = $newWordInput.val();
+      var sanitizedNewWord = miscHelpers.getSanitizedWord(newWord);
 
       // get custom definition
-      const newWordDefinition = $('#new_word_definition').val();
+      var newWordDefinition = $('#new_word_definition').val();
       if (dictHelpers.isValidWord(sanitizedNewWord)) {
         // add the new word to the list (UI updated upon the overlay being clicked)
         // nextIndex = dictHelpers.getNextIndex(store.get('words'));
@@ -187,8 +190,8 @@ $('.container').on('click', (evt) => {
         // fetch the last index
         lastIndex = dictHelpers.getLastIndex(store.get('words')) + 1;
         // lastIndex += 1;
-        const newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0, definition: newWordDefinition };
-        const newListSize = dictHelpers.getWordCount(store.get('words'))
+        var newWordObj = { id: lastIndex, word: sanitizedNewWord, score: 0, definition: newWordDefinition };
+        var newListSize = dictHelpers.getWordCount(store.get('words'))
         store.set(`words.${newListSize}`, newWordObj);
         console.log(store.get('words'));
         // clear the error message and the new word entered
@@ -197,7 +200,7 @@ $('.container').on('click', (evt) => {
         $newWordInput.closest('form')[0].reset();
       } else {
         // display the error message
-        const errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
+        var errorMessage = dictHelpers.getErrorMessageForNewWord(sanitizedNewWord);
         $('.modal span').removeClass('success').addClass('error').text(errorMessage);
       }
     }
@@ -218,9 +221,9 @@ ipcRenderer.on('new-list-confirmation', (evt, index) => {
 
 // process the file name and contents
 ipcRenderer.on('selected-file', (evt, path) => {
-  const pathStr = path[0];
-  const fileName = dictHelpers.trimFilePath(pathStr);
-  const fileExt = dictHelpers.getFileExt(fileName);
+  var pathStr = path[0];
+  var fileName = dictHelpers.trimFilePath(pathStr);
+  var fileExt = dictHelpers.getFileExt(fileName);
 
   if (fileExt !== 'txt') {
     console.log('Looks like the selected file is not a text file.');
@@ -239,7 +242,7 @@ ipcRenderer.on('selected-file', (evt, path) => {
     encoding: 'utf8'
   }, (err, data) => {
     if (err) throw err;
-    let wordsArr = dictHelpers.getWordsListData(miscHelpers.getSanitizedWords(data));
+    var wordsArr = dictHelpers.getWordsListData(miscHelpers.getSanitizedWords(data));
 
     // create/update list
     store.set('name', fileName);
@@ -257,13 +260,13 @@ ipcRenderer.on('selected-file', (evt, path) => {
 
 // validate interval input when blurred and display error message if necessary
 $intervalInput.on('blur', (evt) => {
-  const $e = $(evt.target);
-  const $errorMessageSpan = $e.next('.error');
-  let isValidInterval = dictHelpers.isValidInterval($e);
+  var $e = $(evt.target);
+  var $errorMessageSpan = $e.next('.error');
+  var isValidInterval = dictHelpers.isValidInterval($e);
 
   if (!isValidInterval) {
     // get and display error message
-    let errorMessage = {};
+    var errorMessage = {};
     dictHelpers.registerIntervalErrorMessage(errorMessage, $e[0].validity);
     $errorMessageSpan.text(errorMessage.interval);
   } else {
@@ -279,7 +282,7 @@ $intervalInput.on('focus', (evt) => {
 // kick off notification displays
 $toggleBtn.on('click', (evt) => {
   evt.preventDefault();
-
+  console.log('toggle btn clicked');
   if (timer) {
     // stop the timer and change the toggle btn text
     clearInterval(timer);
@@ -289,19 +292,19 @@ $toggleBtn.on('click', (evt) => {
   }
 
   // validate form
-  let isValidForm = dictHelpers.validateForm($form);
+  var isValidForm = dictHelpers.validateForm($form);
 
   // if invalid, display error message(s) and return
   if (!isValidForm) {
-    const errorMessages = dictHelpers.getErrorMessages($form);
+    var errorMessages = dictHelpers.getErrorMessages($form);
     dictHelpers.displayErrors(errorMessages, $form);
     return;
   }
 
   // let the user know the review process has started
-  const minutes = Number($intervalInput.val());
-  const notificationIconPath = path.join(__dirname, '..', 'assets', 'logo.png');
-  const initialNotificationOptions = {
+  var minutes = Number($intervalInput.val());
+  var notificationIconPath = path.join(__dirname, '..', 'assets', 'logo.png');
+  var initialNotificationOptions = {
     icon: notificationIconPath,
     sound: false,
     title: 'Simple Vocabulary Builder',
@@ -330,10 +333,10 @@ $toggleBtn.on('click', (evt) => {
   }
 
   // implement notifications
-  const yesIcon = '✓';
-  const noIcon = '☓'
-  let notificationOptions;
-  let notification;
+  var yesIcon = '✓';
+  var noIcon = '☓'
+  var notificationOptions;
+  var notification;
 
   // index !== id; index in terms of the sorted arr
   index = index || 0;
@@ -342,15 +345,15 @@ $toggleBtn.on('click', (evt) => {
   $(evt.target).text('Stop');
 
   timer = setInterval(() => {
-    let currentIndex = index;
-    let currentWordObj = words[currentIndex];
-    let currentWord = currentWordObj.word;
-    let definition = currentWordObj.definition;
-    let apiPath = encodeURI(`/?define=${currentWord}&lang=${targetLang}`);
+    var currentIndex = index;
+    var currentWordObj = words[currentIndex];
+    var currentWord = currentWordObj.word;
+    var definition = currentWordObj.definition;
+    var apiPath = encodeURI(`/?define=${currentWord}&lang=${targetLang}`);
 
     // set 'Content-Type' to 'text/plain', rather than 'application/json'
     // due to the original API response not being formated properly
-    const options = {
+    var options = {
       host: API_HOST_URL,
       port: '443',
       path: apiPath,
@@ -360,12 +363,12 @@ $toggleBtn.on('click', (evt) => {
     };
 
     // make an api call for each word
-    const req = http.request(options, (res) => {
+    var req = http.request(options, (res) => {
       res.setEncoding('utf8');
       res.on('data', (data) => {
         // check if data is of type html
         // (no error code specified in the original api)
-        const json = data[0] === '<' ? null : JSON.parse(data);
+        var json = data[0] === '<' ? null : JSON.parse(data);
         definition = definition || dictHelpers.getFirstDefinition(json);
 
         notificationOptions = {
@@ -388,9 +391,9 @@ $toggleBtn.on('click', (evt) => {
           // !!! must reference the "id" for each word to be updated
           // console.log('NOTIFIED!!!');
 
-          const id = dictHelpers.getId(currentWord);
-          const currentScore = store.get(`words.${id}.score`);
-          let updatedScore;
+          var id = dictHelpers.getId(currentWord);
+          var currentScore = store.get(`words.${id}.score`);
+          var updatedScore;
 
           // update database based on the user response
           if (metadata.activationValue === yesIcon) {
