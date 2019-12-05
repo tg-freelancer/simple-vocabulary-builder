@@ -11,8 +11,11 @@ module.exports = {
   getFirstDefinition(json) {
     if (!json) return null;
     const meanings = json.meaning || json[0].meaning;
-    const definitions = Object.values(meanings)[0].definitions;
+    // console.log(`meanings`, meanings);
+    const definitions = Object.values(meanings)[0];
+    // console.log(`definitions:`, definitions);
     const firstDefinition = definitions[0].definition;
+    // console.log(`firstDefinition:`, firstDefinition);
     // return meanings[Object.keys(meanings)[0]][0].definition;
 
     return firstDefinition;
