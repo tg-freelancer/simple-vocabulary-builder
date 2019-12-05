@@ -45,7 +45,7 @@ var words;
 $('.current_words_list').text(store.get('name'));
 
 // handle link clicks on non-index pages
-$('.container').on('click', (evt) => {
+$('.container').off('click.container').on('click.container', (evt) => {
   var $e = $(evt.target);
 
   // return if the clicked element is on the index page
@@ -369,6 +369,7 @@ $toggleBtn.on('click', (evt) => {
         // check if data is of type html
         // (no error code specified in the original api)
         var json = data[0] === '<' ? null : JSON.parse(data);
+        debugger;
         definition = definition || dictHelpers.getFirstDefinition(json);
 
         notificationOptions = {
@@ -380,7 +381,7 @@ $toggleBtn.on('click', (evt) => {
           timeout: intervalInSeconds,
           closeLabel: 'Close',
           actions: [yesIcon, noIcon],
-          dropdownLabel: 'Remember?',
+          dropdownLabel: 'Recall?',
         };
 
         if (!definition) {
@@ -404,6 +405,7 @@ $toggleBtn.on('click', (evt) => {
           }
 
           store.set(`words.${id}.score`, updatedScore);
+          console.log(store.get('words'));
         });
       });
 
