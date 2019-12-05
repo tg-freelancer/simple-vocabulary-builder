@@ -17,7 +17,7 @@ $('aside li').on('click', (evt) => {
   if ($link.is('li')) {
     // the clicked element is not an anchor element (li element).
     // Sets it to its child anchor element
-    $link = $(evt.target).find('a');
+    $link = $link.find('a');
   }
 
   const linkType = $link.attr('class');
