@@ -191,8 +191,8 @@ button {
 
 .add-word-btn {
   position: absolute;
-  left: 422px;
-  top: 50px;
+  left: 252px;
+  top: 7px;
 }
 
 #interval {
@@ -258,6 +258,10 @@ input[type="checkbox"] {
 }
 
 /*--- stats ---*/
+
+.stats {
+  position: relative;
+}
 
 table {
   min-width: 350px;
